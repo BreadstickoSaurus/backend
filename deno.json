@@ -1,0 +1,42 @@
+{
+  "compilerOptions": {
+      "allowJs": false,
+      "lib": ["deno.window"],
+      "strict": true
+  },
+  "lint": {
+      "include": ["src/"],
+      "exclude": [],
+      "rules": {
+          "tags": ["recommended"],
+          "include": ["ban-untagged-todo"],
+          "exclude": ["no-unused-vars"]
+      }
+  },
+  "fmt": {
+      "useTabs": false,
+      "lineWidth": 100,
+      "indentWidth": 4,
+      "semiColons": true,
+      "singleQuote": true,
+      "proseWrap": "preserve",
+      "include": ["src/"],
+      "exclude": []
+  },
+  "lock": false,
+  "nodeModulesDir": false,
+  "test": {
+      "include": ["tests/"],
+      "exclude": []
+  },
+  "tasks": {
+      "start": "deno run --env --allow-env --allow-net src/main.ts",
+      "dev": "deno run --env --allow-env --watch src/main.ts",
+      "qa": "deno  check --all src/main.ts && deno fmt && deno lint && deno test"
+  },
+  "imports": {
+      "@oak/oak": "jsr:@oak/oak@^17.0.0",
+      "@std/assert": "jsr:@std/assert@^1.0.4",
+      "@tajpouria/cors": "jsr:@tajpouria/cors@^1.2.1",
+  }
+}
