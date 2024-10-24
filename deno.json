@@ -30,7 +30,7 @@
         "exclude": []
     },
     "tasks": {
-        "start": "deno run --env --allow-env --allow-net src/main.ts",
+        "start": "deno run --env --allow-read --allow-net src/main.ts",
         "dev": "deno run --env --allow-env --watch src/main.ts",
         "qa": "deno  check --all src/main.ts && deno fmt && deno lint && deno test"
     },
@@ -38,6 +38,8 @@
         "@oak/oak": "jsr:@oak/oak@^17.0.0",
         "@std/assert": "jsr:@std/assert@^1.0.4",
         "@tajpouria/cors": "jsr:@tajpouria/cors@^1.2.1",
-        "@zod": "npm:zod@^3.23.8"
+        "@zod": "npm:zod@^3.23.8",
+        "@mysql": "https://deno.land/x/mysql@v2.12.1/mod.ts",
+        "@dotenv": "https://deno.land/x/dotenv@v3.2.2/mod.ts"
     }
 }

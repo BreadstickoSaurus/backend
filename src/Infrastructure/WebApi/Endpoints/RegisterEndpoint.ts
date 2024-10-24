@@ -1,7 +1,7 @@
 import { RouterContext } from '@oak/oak';
 import { z } from '@zod';
 import { Endpoint } from '../mod.ts';
-//import controller
+import { RegisterController } from '../mod.ts';
 import { ErrorsBag } from '../../Shared/mod.ts';
 import { validateRequest } from '../../Shared/mod.ts';
 
@@ -25,15 +25,16 @@ export class RegisterEndpoint implements Endpoint {
                 return;
             }
 
-            // const controller = new CreateTournamentController(useCase);
+            const controller = new RegisterController();
 
-            // await controller.handle(request);
+            await controller.registerUser(data.name, data.password);
 
             context.response.status = 201;
             context.response.body = {
                 success: true,
                 message: "User successfully registered",
             };
+
         }catch (error) {
             context.response.status = 500;
             context.response.body = { error: error };
