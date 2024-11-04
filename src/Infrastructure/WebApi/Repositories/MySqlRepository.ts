@@ -19,6 +19,14 @@ export class MySqlRepository {
             if (result.affectedRows === 0) {
                 throw new ValidationError('Username is already in use');
             }
+            const userID = result.lastInsertId;
+
+            if (userID === undefined) {
+                throw new Error('Failed to retrieve user ID');
+            }
+
+            await this.addCollection(userID);
+
         }catch(error){
             console.error('Error in registerUser:', error);
             if ((error as Error).message.includes("Duplicate entry")) {
@@ -45,6 +53,27 @@ export class MySqlRepository {
             console.error('Error in loginUser:', error);
             if (error instanceof AuthenticationError) throw error;
             throw new Error('Database error');
+        }
+    }
+
+    private async addCollection(userId: number): Promise<void> {
+        try {
+            const result = await this.db.getClient().execute(
+                'INSERT INTO collections (user_id) VALUES (?)',
+                [userId]
+            );
+    
+            if (result.affectedRows === 0) {
+                throw new ValidationError("Could not add collection");
+            }
+        } catch (error) {
+            console.error("Error in addCollection:", error);
+            
+            if ((error as Error).message.includes("Duplicate entry")) {
+                throw new ValidationError("A collection already exists for this user");
+            }
+
+            throw new Error("Database error");
         }
     }
 }

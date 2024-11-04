@@ -12,20 +12,18 @@ export function endpoints(): Router {
     router.get('/', use(new RootEndpoint()));
     router.post('/register', use(new RegisterEndpoint()));
     router.post('/login', use(new LoginEndpoint()));
-    //login
-    //register - create coll and wish
-    // - user ID
 
     //addGameToCollection : userID
     //addGameToWishlist : userID
+    
+    //getGamesFromCollection : userID
+    //getGamesFromWishlist : userID
 
+    //getGameDetails : gameID
+    //getGameImages : gameID
 
-    //(all games from user via collectionid then userid wel of niet wishlisted)
-    //addImageToGame
-    //removeImageFromGame
-    //updateGame
-    //getGames : id
-    //getGameDetails : id
+    //updateGame : gameID
+    //deleteGame : gameID
 
     //getAllWishlistedGames | semantic search
 
