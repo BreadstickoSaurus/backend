@@ -1,7 +1,6 @@
-import { Database, MySqlRepository } from '../mod.ts';
+import { MySqlRepository } from '../mod.ts';
 import { ServiceLocator } from '../../Shared/mod.ts';
 import { User } from '../mod.ts';
-import { Context } from '@oak/oak';
 
 export class LoginController{
     private repository: MySqlRepository;

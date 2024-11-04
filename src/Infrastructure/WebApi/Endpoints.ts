@@ -1,5 +1,5 @@
 import { Router, RouterContext } from '@oak/oak';
-import { RootEndpoint, RegisterEndpoint, Endpoint, LoginEndpoint } from './mod.ts';
+import { RootEndpoint, RegisterEndpoint, Endpoint, LoginEndpoint, AddGameToColEndpoint } from './mod.ts';
 
 function use(endpoint: Endpoint) {
     return (context: RouterContext<string>) => endpoint.handle(context);
@@ -13,7 +13,10 @@ export function endpoints(): Router {
     router.post('/register', use(new RegisterEndpoint()));
     router.post('/login', use(new LoginEndpoint()));
 
+    //getCollectionId : userID
+
     //addGameToCollection : userID
+    router.post('/addGameToCol/:userId', use(new AddGameToColEndpoint()));
     //addGameToWishlist : userID
     
     //getGamesFromCollection : userID
@@ -26,6 +29,13 @@ export function endpoints(): Router {
     //deleteGame : gameID
 
     //getAllWishlistedGames | semantic search
+
+    //state,platofrm,publisher,developer,genre
+    //crud operations on all of them
+
+
+
+
 
 
     //filter very precies, semantic search only name, appachesolr

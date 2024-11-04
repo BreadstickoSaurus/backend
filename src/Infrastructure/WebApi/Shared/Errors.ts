@@ -11,3 +11,10 @@ export class AuthenticationError extends Error {
         this.name = "AuthenticationError";
     }
 }
+
+export class ForeignKeyError extends Error {
+    constructor(message: string) {
+        super(message);
+        this.name = "ForeignKeyError";
+    }
+}
