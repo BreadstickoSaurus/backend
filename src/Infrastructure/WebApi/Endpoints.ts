@@ -1,5 +1,5 @@
 import { Router, RouterContext } from '@oak/oak';
-import { RootEndpoint, RegisterEndpoint, Endpoint, LoginEndpoint, AddGameToColEndpoint, AddGameToWishlistEndpoint } from './mod.ts';
+import { RootEndpoint, RegisterEndpoint, Endpoint, LoginEndpoint, AddGameToColEndpoint, AddGameToWishlistEndpoint, GetGamesFromCollectionEndpoint } from './mod.ts';
 
 function use(endpoint: Endpoint) {
     return (context: RouterContext<string>) => endpoint.handle(context);
@@ -13,14 +13,11 @@ export function endpoints(): Router {
     router.post('/register', use(new RegisterEndpoint()));
     router.post('/login', use(new LoginEndpoint()));
 
-    //getCollectionId : userID
-
-    //addGameToCollection : userID
     router.post('/game/collection/:userId', use(new AddGameToColEndpoint()));
-    //addGameToWishlist : userID
     router.post('/game/wishlist/:userId', use(new AddGameToWishlistEndpoint()));
     
     //getGamesFromCollection : userID
+    router.get('/game/collection/:userId', use(new GetGamesFromCollectionEndpoint))
     //getGamesFromWishlist : userID
 
     //getGameDetails : gameID

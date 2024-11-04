@@ -7,6 +7,7 @@ export { RegisterEndpoint } from './Endpoints/RegisterEndpoint.ts';
 export { LoginEndpoint } from './Endpoints/LoginEndpoint.ts';
 export { AddGameToColEndpoint } from './Endpoints/AddGameToColEndpoint.ts';
 export { AddGameToWishlistEndpoint } from './Endpoints/AddGameToWishlistEndpoint.ts';
+export { GetGamesFromCollectionEndpoint } from './Endpoints/GetGamesFromCollectionEndpoint.ts'
 
 export { Database } from './db/Database.ts';
 export type { User } from './db/models/UserModel.ts';
@@ -17,5 +18,6 @@ export { MySqlRepository } from './Repositories/MySqlRepository.ts';
 export { RegisterController } from './Controllers/RegisterController.ts';
 export { LoginController } from './Controllers/LoginController.ts';
 export {  AddGameToColController } from './Controllers/AddGameToColController.ts';
+export { GetGamesFromCollectionController } from './Controllers/GetGamesFromCollectionController.ts';
 
 export { ValidationError, AuthenticationError, ForeignKeyError } from './Shared/Errors.ts';

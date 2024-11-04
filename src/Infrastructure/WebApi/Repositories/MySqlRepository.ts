@@ -125,4 +125,25 @@ export class MySqlRepository {
             throw new Error("Database error");
         }
     }
+
+    async getGamesFromCol(userId: number) : Promise<Game[]> {
+        try {
+            const collectionId = await this.getCollectionId(userId);
+
+            const result = await this.db.getClient().execute(
+                'SELECT * FROM games WHERE collection_id = ? AND wishlisted = 0',
+                [collectionId]
+            );
+
+            if (!result.rows || result.rows.length === 0) {
+                throw new ValidationError("No games found in collection");
+            }
+
+            return result.rows as Game[];
+        } catch (error) {
+            console.error("Error in getGamesFromCol:", error);
+            if (error instanceof ValidationError) throw error;
+            throw new Error("Database error");
+        }
+    }
 }
