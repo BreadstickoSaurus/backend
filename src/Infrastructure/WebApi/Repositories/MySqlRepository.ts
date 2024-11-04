@@ -97,9 +97,13 @@ export class MySqlRepository {
 
     async addGameToCol(data: Game): Promise<number> {
         try {
+            let wishlisted = 0;
+            if(data.wishlisted){
+                wishlisted = 1;
+            }
             const result = await this.db.getClient().execute(
                 'INSERT INTO games (game_title, game_description, release_date, state_id, platform_id, release_country_code, publisher_id, developer_id, genre_id, collection_id, wishlisted) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
-                [data.title, data.description, data.releaseDate, data.stateId, data.platformId, data.ReleaseCountryCode, data.publisherID, data.developerID, data.genreId, data.collectionId, data.wishlisted]
+                [data.title, data.description, data.releaseDate, data.stateId, data.platformId, data.ReleaseCountryCode, data.publisherID, data.developerID, data.genreId, data.collectionId, wishlisted]
             );
 
             if (result.affectedRows === 0) {

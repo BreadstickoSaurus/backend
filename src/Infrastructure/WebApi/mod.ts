@@ -6,6 +6,7 @@ export { RootEndpoint } from './Endpoints/RootEndpoint.ts';
 export { RegisterEndpoint } from './Endpoints/RegisterEndpoint.ts';
 export { LoginEndpoint } from './Endpoints/LoginEndpoint.ts';
 export { AddGameToColEndpoint } from './Endpoints/AddGameToColEndpoint.ts';
+export { AddGameToWishlistEndpoint } from './Endpoints/AddGameToWishlistEndpoint.ts';
 
 export { Database } from './db/Database.ts';
 export type { User } from './db/models/UserModel.ts';

@@ -4,10 +4,11 @@ import { ErrorsBag } from '../../Shared/mod.ts';
 import { validateRequest } from '../../Shared/mod.ts';
 import { z } from '@zod';
 
-export class AddGameToColEndpoint implements Endpoint {
+
+export class AddGameToWishlistEndpoint implements Endpoint {
     private readonly _errorsBag = new ErrorsBag();
 
-    private readonly addGameToColSchema = z.object({
+    private readonly addGameToWLSchema = z.object({
         title: z.string().min(1),
         description: z.string(),
         releaseDate: z.preprocess((arg) => {
@@ -33,7 +34,7 @@ export class AddGameToColEndpoint implements Endpoint {
             const userId = context.params.userId;
             const data = await context.request.body.json();
 
-            validateRequest(data, this.addGameToColSchema, this._errorsBag);
+            validateRequest(data, this.addGameToWLSchema, this._errorsBag);
 
             if(this._errorsBag.hasErrors()){
                 context.response.status = 400;
@@ -70,7 +71,7 @@ export class AddGameToColEndpoint implements Endpoint {
             description: data.description,
             releaseDate: data.releaseDate,
             collectionId: 0,
-            wishlisted: false,
+            wishlisted: true,
             stateId: data.stateId,
             platformId: data.platformId,
             ReleaseCountryCode: data.ReleaseCountryCode,

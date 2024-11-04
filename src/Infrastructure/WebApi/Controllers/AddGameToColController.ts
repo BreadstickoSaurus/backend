@@ -10,7 +10,6 @@ export class AddGameToColController{
 
     async addGameToCol(userId: number, data: Game): Promise<number> {
         data.collectionId = await this.repository.getCollectionId(userId);
-
         try{
             const gameId = await this.repository.addGameToCol(data);
             return gameId;
