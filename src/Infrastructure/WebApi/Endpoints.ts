@@ -1,5 +1,5 @@
 import { Router, RouterContext } from '@oak/oak';
-import { RootEndpoint, RegisterEndpoint, Endpoint } from './mod.ts';
+import { RootEndpoint, RegisterEndpoint, Endpoint, LoginEndpoint } from './mod.ts';
 
 function use(endpoint: Endpoint) {
     return (context: RouterContext<string>) => endpoint.handle(context);
@@ -11,6 +11,7 @@ export function endpoints(): Router {
 
     router.get('/', use(new RootEndpoint()));
     router.post('/register', use(new RegisterEndpoint()));
+    router.post('/login', use(new LoginEndpoint()));
     //login
     //register - create coll and wish
     // - user ID

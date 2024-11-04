@@ -1,15 +1,15 @@
 import { RouterContext } from '@oak/oak';
 import { z } from '@zod';
 import { Endpoint } from '../mod.ts';
-import { RegisterController } from '../mod.ts';
+import { LoginController } from '../mod.ts';
 import { ErrorsBag } from '../../Shared/mod.ts';
 import { validateRequest } from '../../Shared/mod.ts';
 import { AuthenticationError, ValidationError } from '../mod.ts';
 
-export class RegisterEndpoint implements Endpoint {
+export class LoginEndpoint implements Endpoint {
     private readonly _errorsBag = new ErrorsBag();
 
-    private readonly registerSchema = z.object({
+    private readonly loginSchema = z.object({
         name: z.string().min(1),
         password: z.string().min(1),
     });
@@ -18,7 +18,7 @@ export class RegisterEndpoint implements Endpoint {
         try{
             const data = await context.request.body.json();   
 
-            validateRequest(data, this.registerSchema, this._errorsBag);
+            validateRequest(data, this.loginSchema, this._errorsBag);
 
             if (this._errorsBag.hasErrors()) {
                 context.response.status = 400;
@@ -26,14 +26,15 @@ export class RegisterEndpoint implements Endpoint {
                 return;
             }
 
-            const controller = new RegisterController();
+            const controller = new LoginController();
 
-            await controller.registerUser(data.name, data.password);
+            const result = await controller.loginUser(data.name, data.password);
 
             context.response.status = 201;
             context.response.body = {
                 success: true,
-                message: "User successfully registered",
+                message: "User successfully logged in",
+                id: result,
             };
 
         }catch (error) {
