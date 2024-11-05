@@ -370,5 +370,23 @@ export class MySqlRepository {
             throw new Error("Database error");
         }
     }
+
+    async getImagesFromGame(gameId: number): Promise<string[]> {
+        try {
+            const result = await this.db.getClient().execute(
+                'SELECT image_url FROM images WHERE game_id = ?',
+                [gameId]
+            );
+
+            if (!result.rows) {
+                throw new ValidationError("Images not found");
+            }
+
+            return result.rows.map((row: any) => row.image_url);
+        } catch (error) {
+            console.error("Error in getImagesFromGame:", error);
+            throw new Error("Database error");
+        }
+    }
     
 }

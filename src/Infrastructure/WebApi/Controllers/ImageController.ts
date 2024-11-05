@@ -33,4 +33,7 @@ export class ImageController {
    async saveImageUrls(gameId: number, imageUrls: string[]): Promise<void> {
         await this.repository.addImagesToGame(gameId, imageUrls);
    }
+   async getImageUrls(gameId: number): Promise<string[]> {
+        return await this.repository.getImagesFromGame(gameId);
+   }
 }

@@ -10,7 +10,8 @@ import {
     GetGamesFromWishlistEndpoint, 
     GetGameDetailsEndpoint,
     UpdateGameEndpoint,
-    AddImageToGameEndpoint
+    AddImageToGameEndpoint,
+    getImageUrlsFromGame
 } from './mod.ts';
 
 function use(endpoint: Endpoint) {
@@ -34,8 +35,9 @@ export function endpoints(): Router {
     router.get('/game/:gameId', use(new GetGameDetailsEndpoint()));
 
     router.put('/game/:gameId', use(new UpdateGameEndpoint()));
-    //postImages : gameID
+
     router.post('/game/:gameId/images', use(new AddImageToGameEndpoint()));
+    router.get('/game/:gameId/images', use(new getImageUrlsFromGame()));
 
     //deleteImages : gameID
     //deleteGame : gameID
