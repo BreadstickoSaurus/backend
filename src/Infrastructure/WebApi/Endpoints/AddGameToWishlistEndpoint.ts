@@ -71,7 +71,7 @@ export class AddGameToWishlistEndpoint implements Endpoint {
             description: data.description,
             releaseDate: data.releaseDate,
             collectionId: 0,
-            wishlisted: true,
+            wishlisted: 1,
             stateId: data.stateId,
             platformId: data.platformId,
             ReleaseCountryCode: data.ReleaseCountryCode,

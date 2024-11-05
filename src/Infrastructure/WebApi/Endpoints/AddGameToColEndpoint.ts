@@ -70,7 +70,7 @@ export class AddGameToColEndpoint implements Endpoint {
             description: data.description,
             releaseDate: data.releaseDate,
             collectionId: 0,
-            wishlisted: false,
+            wishlisted: 0,
             stateId: data.stateId,
             platformId: data.platformId,
             ReleaseCountryCode: data.ReleaseCountryCode,

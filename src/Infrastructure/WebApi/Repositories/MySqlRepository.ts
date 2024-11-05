@@ -96,6 +96,42 @@ export class MySqlRepository {
         }
     }
 
+    async getCollectionIdByGameId(gameId: number): Promise<number> {
+        try {
+            const result = await this.db.getClient().execute(
+                'SELECT collection_id FROM games WHERE game_id = ?',
+                [gameId]
+            );
+
+            if (!result.rows || result.rows.length === 0) {
+                throw new ValidationError("Collection not found");
+            }
+
+            return result.rows[0].collection_id;
+        } catch (error) {
+            console.error("Error in getCollectionIdByGameId:", error);
+            throw new Error("Database error");
+        }
+    }
+
+    async getWishlistValue(gameId: number): Promise<number> {
+        try {
+            const result = await this.db.getClient().execute(
+                'SELECT wishlisted FROM games WHERE game_id = ?',
+                [gameId]
+            );
+
+            if (!result.rows || result.rows.length === 0) {
+                throw new ValidationError("Game not found");
+            }
+
+            return result.rows[0].wishlisted;
+        } catch (error) {
+            console.error("Error in getWishlistValue:", error);
+            throw new Error("Database error");
+        }
+    }
+
     async addGameToCol(data: Game): Promise<number> {
         try {
             let wishlisted = 0;
@@ -252,6 +288,70 @@ export class MySqlRepository {
         } catch (error) {
             console.error("Error in getGameDetails:", error);
             if (error instanceof ValidationError) throw error;
+            throw new Error("Database error");
+        }
+    }
+
+    async updateGame(gameId: number, data: Game): Promise<number> {
+        try{
+            const result = await this.db.getClient().execute(
+                `
+                UPDATE games 
+                SET 
+                    game_title = ?, 
+                    game_description = ?, 
+                    release_date = ?, 
+                    state_id = ?, 
+                    platform_id = ?, 
+                    release_country_code = ?, 
+                    publisher_id = ?, 
+                    developer_id = ?, 
+                    genre_id = ?, 
+                    collection_id = ?, 
+                    wishlisted = ?
+                WHERE 
+                    game_id = ?
+                `,
+                [
+                    data.title, 
+                    data.description, 
+                    data.releaseDate, 
+                    data.stateId, 
+                    data.platformId, 
+                    data.ReleaseCountryCode, 
+                    data.publisherID, 
+                    data.developerID, 
+                    data.genreId, 
+                    data.collectionId, 
+                    data.wishlisted,
+                    gameId 
+                ]
+            );
+    
+            if(result.affectedRows === 0){
+                throw new ValidationError("Game not updated");
+            }
+    
+            return gameId;
+        }catch(error){
+            console.error('Error in updateGame:', error);
+            if(error instanceof ValidationError) throw error;
+            if ((error as Error).message.includes('Cannot add or update a child row: a foreign key constraint fails')) {
+                throw new ForeignKeyError("ForeignKey error"); // Throw custom error
+            }
+            throw new Error('Database error');
+        }
+    }
+
+    async updateAltTitles(gameId: number, altTitles: string[] = []): Promise<void> {
+        try {
+            await this.db.getClient().execute('DELETE FROM alt_titles WHERE game_id = ?', [gameId]);
+
+            for (const title of altTitles) {
+                await this.db.getClient().execute('INSERT INTO alt_titles (game_id, alt_title) VALUES (?, ?)', [gameId, title]);
+            }
+        } catch (error) {
+            console.error("Error in updateAltTitles:", error);
             throw new Error("Database error");
         }
     }

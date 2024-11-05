@@ -4,7 +4,7 @@ export interface Game{
     description: string;
     releaseDate: Date;
     collectionId: number;
-    wishlisted: boolean;
+    wishlisted: number;
     stateId: number;
     platformId: number;
     ReleaseCountryCode: string;
