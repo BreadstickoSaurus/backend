@@ -1,7 +1,7 @@
 import { Application } from '@oak/oak/application';
 import { oakCors } from '@tajpouria/cors';
 import { Module } from '../Shared/mod.ts';
-import { endpoints } from './mod.ts';
+import { endpoints, staticFileMiddleware } from './mod.ts';
 
 export class WebApiModule implements Module {
     private readonly _port: number;
@@ -24,6 +24,9 @@ export class WebApiModule implements Module {
                 exposedHeaders: ['*'],
             },
         ));
+
+        app.use(staticFileMiddleware("/uploads", `${Deno.cwd()}/images`));
+
 
         const router = endpoints();
 

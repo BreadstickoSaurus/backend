@@ -11,6 +11,7 @@ export { GetGamesFromCollectionEndpoint } from './Endpoints/GetGamesFromCollecti
 export { GetGamesFromWishlistEndpoint } from './Endpoints/GetGamesFromWishlistEndpoint.ts';
 export { GetGameDetailsEndpoint } from './Endpoints/GetGameDetailsEndpoint.ts';
 export { UpdateGameEndpoint } from './Endpoints/UpdateGameEndpoint.ts';
+export{ AddImageToGameEndpoint } from './Endpoints/AddImageToGameEndpoint.ts';
 
 export { Database } from './db/Database.ts';
 export type { User } from './db/models/UserModel.ts';
@@ -25,5 +26,8 @@ export { AddGameToColController } from './Controllers/AddGameToColController.ts'
 export { GetGamesFromCollectionController } from './Controllers/GetGamesFromCollectionController.ts';
 export { GetGameDetailsController } from './Controllers/GetGameDetailsController.ts';
 export { UpdateGameController } from './Controllers/UpdateGameController.ts';
+export { ImageController } from './Controllers/ImageController.ts';
 
 export { ValidationError, AuthenticationError, ForeignKeyError } from './Shared/Errors.ts';
+
+export { staticFileMiddleware } from './Middleware/staticFileMiddleware.ts';

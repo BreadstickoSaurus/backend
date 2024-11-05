@@ -355,5 +355,20 @@ export class MySqlRepository {
             throw new Error("Database error");
         }
     }
+
+    async addImagesToGame(gameId: number, imageUrls: string[]): Promise<void> {
+        try {
+            if (imageUrls.length === 0) {
+                throw new ValidationError("No images to add");
+            }
+            for (const url of imageUrls) {
+                await this.db.getClient().execute('INSERT INTO images (game_id, image_url) VALUES (?, ?)', [gameId, url]);
+            }
+
+        } catch (error) {
+            console.error("Error in addImagesToGame:", error);
+            throw new Error("Database error");
+        }
+    }
     
 }
