@@ -16,4 +16,13 @@ export class GetGamesFromCollectionController{
             throw error;
         }
     }
+
+    async getGameFromWishlist(userId: number): Promise<Game[]> {
+        try{
+            const games = await this.repository.getGamesFromWishlist(userId);
+            return games;
+        } catch(error){
+            throw error;
+        }
+    }
 }

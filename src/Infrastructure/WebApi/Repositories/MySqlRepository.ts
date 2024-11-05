@@ -149,4 +149,28 @@ export class MySqlRepository {
             throw new Error("Database error");
         }
     }
+
+    async getGamesFromWishlist(userId: number) : Promise<Game[]> {
+        try {
+            const collectionId = await this.getCollectionId(userId);
+
+            const result = await this.db.getClient().execute(
+                'SELECT * FROM games WHERE collection_id = ? AND wishlisted = 1',
+                [collectionId]
+            );
+
+            if (!result.rows) {
+                throw new AuthenticationError("User wishlist not found");
+            }
+            if(result.rows.length === 0){
+                throw new ValidationError("No games found in wishlist");
+            }
+
+            return result.rows as Game[];
+        } catch (error) {
+            console.error("Error in getGamesFromWishlist:", error);
+            if (error instanceof ValidationError) throw error;
+            throw new Error("Database error");
+        }
+    }
 }
