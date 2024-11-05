@@ -1,3 +1,4 @@
+import type { GameFull } from '../db/models/GameFullModel.ts';
 import { Database, User, Game, ForeignKeyError } from "../mod.ts";
 import { AuthenticationError, ValidationError } from "../mod.ts";
 
@@ -173,4 +174,86 @@ export class MySqlRepository {
             throw new Error("Database error");
         }
     }
+
+    async getGameDetails(gameId: number): Promise<GameFull> {
+        try {
+            //images
+            //alt titles
+            const result = await this.db.getClient().execute(
+                `
+                SELECT 
+                    g.game_id AS id,
+                    g.game_title AS title,
+                    g.game_description AS description,
+                    g.release_date AS releaseDate,
+                    g.collection_id AS collectionId,
+                    g.wishlisted,
+                    s.state_name AS state,
+                    p.platform_name AS platform,
+                    c.country_name AS ReleaseCountry,
+                    pub.publisher_name AS publisher,
+                    d.developer_name AS developer,
+                    gen.genre_name AS genre,
+                    GROUP_CONCAT(DISTINCT img.image_url) AS images,   -- Aggregate images
+                    GROUP_CONCAT(DISTINCT alt.alt_title) AS altTitles -- Aggregate alt titles
+                FROM 
+                    games g
+                JOIN 
+                    game_states s ON g.state_id = s.state_id
+                JOIN 
+                    platforms p ON g.platform_id = p.platform_id
+                JOIN 
+                    countries c ON g.release_country_code = c.country_code
+                JOIN 
+                    publishers pub ON g.publisher_id = pub.publisher_id
+                JOIN 
+                    developers d ON g.developer_id = d.developer_id
+                JOIN 
+                    genres gen ON g.genre_id = gen.genre_id
+                LEFT JOIN 
+                    images img ON g.game_id = img.game_id
+                LEFT JOIN 
+                    alt_titles alt ON g.game_id = alt.game_id
+                WHERE 
+                    g.game_id = ?
+                GROUP BY 
+                    g.game_id, g.game_title, g.game_description, g.release_date, g.collection_id, g.wishlisted,
+                    s.state_name, p.platform_name, c.country_name, pub.publisher_name, d.developer_name, gen.genre_name
+                `,
+                [gameId]
+            );
+    
+            if (!result.rows || result.rows.length === 0) {
+                throw new ValidationError("Game not found");
+            }
+    
+            const row = result.rows[0];
+    
+            // Map to GameFull structure
+            const game: GameFull = {
+                id: row.id,
+                title: row.title,
+                description: row.description,
+                releaseDate: row.releaseDate,
+                collectionId: row.collectionId,
+                wishlisted: row.wishlisted,
+                state: row.state,
+                platform: row.platform,
+                ReleaseCountry: row.ReleaseCountry,
+                publisher: row.publisher,
+                developer: row.developer,
+                genre: row.genre,
+                images: row.images ? row.images.split(",") : [],            // Split images into an array
+                altTitles: row.altTitles ? row.altTitles.split(",") : []     // Split alt titles into an array
+            };
+    
+    
+            return game;
+        } catch (error) {
+            console.error("Error in getGameDetails:", error);
+            if (error instanceof ValidationError) throw error;
+            throw new Error("Database error");
+        }
+    }
+    
 }
