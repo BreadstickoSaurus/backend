@@ -135,7 +135,10 @@ export class MySqlRepository {
                 [collectionId]
             );
 
-            if (!result.rows || result.rows.length === 0) {
+            if (!result.rows) {
+                throw new AuthenticationError("User collection not found");
+            }
+            if(result.rows.length === 0){
                 throw new ValidationError("No games found in collection");
             }
 
