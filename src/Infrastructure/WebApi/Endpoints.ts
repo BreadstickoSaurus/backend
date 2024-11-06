@@ -25,7 +25,11 @@ import {
     AddDeveloperEndpoint,
     DeleteDeveloperEndpoint,
     GetDeveloperEndpoint,
-    GetDevelopersEndpoint
+    GetDevelopersEndpoint,
+    AddGenreEndpoint,
+    DeleteGenreEndpoint,
+    GetGenreEndpoint,
+    GetGenresEndpoint
 } from './mod.ts';
 
 function use(endpoint: Endpoint) {
@@ -67,10 +71,13 @@ export function endpoints(): Router {
     router.delete('/developers/:developerId', use(new DeleteDeveloperEndpoint()));
     router.post('/developers', use(new AddDeveloperEndpoint()));
 
+    router.get('/genres', use(new GetGenresEndpoint()));
+    router.get('/genres/:genreId', use(new GetGenreEndpoint()));
+    router.delete('/genres/:genreId', use(new DeleteGenreEndpoint()));
+    router.post('/genres', use(new AddGenreEndpoint()));
+
 
     //getAllWishlistedGames | semantic search
-
-    //developer,genre
 
     //getState
 

@@ -1,5 +1,5 @@
 import type { GameFull } from '../db/models/GameFullModel.ts';
-import { Database, User, Game, ForeignKeyError, type Platform, type Publisher, type Developer } from "../mod.ts";
+import { Database, User, Game, ForeignKeyError, type Platform, type Publisher, type Developer, type Genre } from "../mod.ts";
 import { AuthenticationError, ValidationError } from "../mod.ts";
 
 export class MySqlRepository {
@@ -630,6 +630,76 @@ export class MySqlRepository {
             }
         } catch (error) {
             console.error("Error in deleteDeveloper:", error);
+            if(error instanceof ValidationError) throw error;
+            throw new Error("Database error");
+        }
+    }
+
+    async addGenre(genre: Genre): Promise<number> {
+        try {
+            const result = await this.db.getClient().execute(
+                'INSERT INTO genres (genre_name) VALUES (?)',
+                [genre.genre_name]
+            );
+
+            if (result.affectedRows === 0) {
+                throw new ValidationError('Genre not added');
+            }
+
+            const genreId = result.lastInsertId;
+            if (genreId === undefined) {
+                throw new Error('Failed to retrieve genre ID');
+            }
+
+            return genreId;
+        } catch (error) {
+            console.error("Error in addGenre:", error);
+            if ((error as Error).message.includes("Duplicate entry")) {
+                throw new ValidationError('Genre already exists');
+            }
+            throw new Error("Database error");
+        }
+    }
+
+    async getGenres(): Promise<Genre[]> {
+        try {
+            const result = await this.db.getClient().execute('SELECT * FROM genres');
+            if (!result.rows) {
+                throw new ValidationError('Genres not found');
+            }
+            return result.rows as Genre[];
+        } catch (error) {
+            console.error("Error in getGenres:", error);
+            if(error instanceof ValidationError) throw error;
+            throw new Error("Database error");
+        }
+    }
+
+    async getGenre(genreId: number): Promise<Genre> {
+        try {
+            const result = await this.db.getClient().execute('SELECT * FROM genres WHERE genre_id = ?', [genreId]);
+
+            if (!result.rows || result.rows.length === 0) {
+                throw new ValidationError('Genre not found');
+            }
+
+            return result.rows[0] as Genre;
+        } catch (error) {
+            console.error("Error in getGenre:", error);
+            if(error instanceof ValidationError) throw error;
+            throw new Error("Database error");
+        }
+    }
+
+    async deleteGenre(genreId: number): Promise<void> {
+        try {
+            const result = await this.db.getClient().execute('DELETE FROM genres WHERE genre_id = ?', [genreId]);
+
+            if (result.affectedRows === 0) {
+                throw new ValidationError('Genre not found');
+            }
+        } catch (error) {
+            console.error("Error in deleteGenre:", error);
             if(error instanceof ValidationError) throw error;
             throw new Error("Database error");
         }
