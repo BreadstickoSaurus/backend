@@ -1,6 +1,6 @@
 import { RouterContext } from '@oak/oak';
-import { ErrorsBag, validateRequest } from '../../Shared/mod.ts';
-import { ForeignKeyError, UpdateGameController, ValidationError, type Endpoint, type Game } from '../mod.ts';
+import { ErrorsBag, validateRequest } from '../../../Shared/mod.ts';
+import { ForeignKeyError, GameController, ValidationError, type Endpoint, type Game } from '../../mod.ts';
 import { number, z } from '@zod';
 
 export class UpdateGameEndpoint implements Endpoint {
@@ -41,7 +41,7 @@ export class UpdateGameEndpoint implements Endpoint {
                 return;
             }   
 
-            const controller = new UpdateGameController();
+            const controller = new GameController();
 
             const collectionId = await controller.getCollectionId(parseInt(gameId));
             const wishlisted = await controller.getWishlistValue(parseInt(gameId));

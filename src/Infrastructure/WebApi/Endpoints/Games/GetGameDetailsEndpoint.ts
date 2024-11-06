@@ -1,6 +1,6 @@
 import { RouterContext } from '@oak/oak';
-import { ErrorsBag } from '../../Shared/mod.ts';
-import { AuthenticationError, GetGameDetailsController, ValidationError, type Endpoint } from '../mod.ts';
+import { ErrorsBag } from '../../../Shared/mod.ts';
+import { AuthenticationError, GameController, ValidationError, type Endpoint } from '../../mod.ts';
 
 export class GetGameDetailsEndpoint implements Endpoint {
     private readonly _errosBag = new ErrorsBag();
@@ -9,7 +9,7 @@ export class GetGameDetailsEndpoint implements Endpoint {
         try{
             const gameId = context.params.gameId;
 
-            const controller = new GetGameDetailsController();
+            const controller = new GameController();
             const game = await controller.getGameDetails(parseInt(gameId));
 
             context.response.status = 200;

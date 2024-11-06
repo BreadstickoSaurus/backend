@@ -1,7 +1,7 @@
 import { RouterContext } from '@oak/oak';
-import { AddGameToColController, type Endpoint, ForeignKeyError, Game } from '../mod.ts';
-import { ErrorsBag } from '../../Shared/mod.ts';
-import { validateRequest } from '../../Shared/mod.ts';
+import { GameController, type Endpoint, ForeignKeyError, Game } from '../../mod.ts';
+import { ErrorsBag } from '../../../Shared/mod.ts';
+import { validateRequest } from '../../../Shared/mod.ts';
 import { z } from '@zod';
 
 
@@ -42,7 +42,7 @@ export class AddGameToWishlistEndpoint implements Endpoint {
                 return;
             }            
 
-            const controller = new AddGameToColController();
+            const controller = new GameController();
             const gameData = this.mapData(data);
 
             const gameId = await controller.addGameToCol(parseInt(userId), gameData);

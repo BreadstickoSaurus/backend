@@ -3,18 +3,18 @@ export { WebApiModule } from '../WebApi/WebApiModule.ts';
 export { endpoints } from '../WebApi/Endpoints.ts';
 export type { Endpoint } from './Shared/Endpoint.ts';
 export { RootEndpoint } from './Endpoints/RootEndpoint.ts';
-export { RegisterEndpoint } from './Endpoints/RegisterEndpoint.ts';
-export { LoginEndpoint } from './Endpoints/LoginEndpoint.ts';
-export { AddGameToColEndpoint } from './Endpoints/AddGameToColEndpoint.ts';
-export { AddGameToWishlistEndpoint } from './Endpoints/AddGameToWishlistEndpoint.ts';
-export { GetGamesFromCollectionEndpoint } from './Endpoints/GetGamesFromCollectionEndpoint.ts';
-export { GetGamesFromWishlistEndpoint } from './Endpoints/GetGamesFromWishlistEndpoint.ts';
-export { GetGameDetailsEndpoint } from './Endpoints/GetGameDetailsEndpoint.ts';
-export { UpdateGameEndpoint } from './Endpoints/UpdateGameEndpoint.ts';
-export { AddImageToGameEndpoint } from './Endpoints/AddImageToGameEndpoint.ts';
-export { getImageUrlsFromGame } from './Endpoints/getImageUrlsFromGame.ts';
-export { DeleteImageFromGameEndpoint } from './Endpoints/DeleteImageFromGameEndpoint.ts';
-export { DeleteGameEndpoint } from './Endpoints/DeleteGameEndpoint.ts';
+export { RegisterEndpoint } from './Endpoints/Authentication/RegisterEndpoint.ts';
+export { LoginEndpoint } from './Endpoints/Authentication/LoginEndpoint.ts';
+export { AddGameToColEndpoint } from './Endpoints/Games/AddGameToColEndpoint.ts';
+export { AddGameToWishlistEndpoint } from './Endpoints/Games/AddGameToWishlistEndpoint.ts';
+export { GetGamesFromCollectionEndpoint } from './Endpoints/Games/GetGamesFromCollectionEndpoint.ts';
+export { GetGamesFromWishlistEndpoint } from './Endpoints/Games/GetGamesFromWishlistEndpoint.ts';
+export { GetGameDetailsEndpoint } from './Endpoints/Games/GetGameDetailsEndpoint.ts';
+export { UpdateGameEndpoint } from './Endpoints/Games/UpdateGameEndpoint.ts';
+export { AddImageToGameEndpoint } from './Endpoints/Images/AddImageToGameEndpoint.ts';
+export { getImageUrlsFromGame } from './Endpoints/Images/getImageUrlsFromGame.ts';
+export { DeleteImageFromGameEndpoint } from './Endpoints/Images/DeleteImageFromGameEndpoint.ts';
+export { DeleteGameEndpoint } from './Endpoints/Games/DeleteGameEndpoint.ts';
 
 
 export { Database } from './db/Database.ts';
@@ -24,14 +24,9 @@ export type { GameFull } from './db/models/GameFullModel.ts';
  
 export { MySqlRepository } from './Repositories/MySqlRepository.ts';
 
-export { RegisterController } from './Controllers/RegisterController.ts';
-export { LoginController } from './Controllers/LoginController.ts';
-export { AddGameToColController } from './Controllers/AddGameToColController.ts';
-export { GetGamesFromCollectionController } from './Controllers/GetGamesFromCollectionController.ts';
-export { GetGameDetailsController } from './Controllers/GetGameDetailsController.ts';
-export { UpdateGameController } from './Controllers/UpdateGameController.ts';
+export { GameController } from './Controllers/GameController.ts';
+export { AuthenticationController } from './Controllers/AuthenticationController.ts';
 export { ImageController } from './Controllers/ImageController.ts';
-export { DeleteGameController } from './Controllers/DeleteGameController.ts';
 
 export { ValidationError, AuthenticationError, ForeignKeyError } from './Shared/Errors.ts';
 

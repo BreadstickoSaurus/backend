@@ -1,10 +1,10 @@
 import { RouterContext } from '@oak/oak';
 import { z } from '@zod';
-import { Endpoint } from '../mod.ts';
-import { RegisterController } from '../mod.ts';
-import { ErrorsBag } from '../../Shared/mod.ts';
-import { validateRequest } from '../../Shared/mod.ts';
-import { AuthenticationError, ValidationError } from '../mod.ts';
+import { Endpoint } from '../../mod.ts';
+import { AuthenticationController } from '../../mod.ts';
+import { ErrorsBag } from '../../../Shared/mod.ts';
+import { validateRequest } from '../../../Shared/mod.ts';
+import { AuthenticationError, ValidationError } from '../../mod.ts';
 
 export class RegisterEndpoint implements Endpoint {
     private readonly _errorsBag = new ErrorsBag();
@@ -26,7 +26,7 @@ export class RegisterEndpoint implements Endpoint {
                 return;
             }
 
-            const controller = new RegisterController();
+            const controller = new AuthenticationController();
 
             await controller.registerUser(data.name, data.password);
 

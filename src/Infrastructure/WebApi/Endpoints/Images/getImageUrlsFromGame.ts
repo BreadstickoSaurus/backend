@@ -1,5 +1,5 @@
-import { ErrorsBag } from '../../Shared/mod.ts';
-import { ImageController, ValidationError, type Endpoint } from '../mod.ts';
+import { ErrorsBag } from '../../../Shared/mod.ts';
+import { ImageController, ValidationError, type Endpoint } from '../../mod.ts';
 import type { RouterContext } from '@oak/oak';
 
 

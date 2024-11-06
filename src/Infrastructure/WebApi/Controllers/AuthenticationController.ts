@@ -3,7 +3,7 @@ import { ServiceLocator } from '../../Shared/mod.ts';
 import { User } from '../mod.ts';
 import { Context } from '@oak/oak';
 
-export class RegisterController{
+export class AuthenticationController{
     private repository: MySqlRepository;
 
     constructor() {
@@ -18,6 +18,20 @@ export class RegisterController{
 
         try{
             await this.repository.registerUser(user);    
+        } catch(error){
+            throw error;
+        }
+    }
+
+    async loginUser(name:string, password:string): Promise<number> {
+        const user: User = {
+            name: name,
+            password: password
+        };
+
+        try{
+            const result = await this.repository.loginUser(user);   
+            return result;
         } catch(error){
             throw error;
         }
