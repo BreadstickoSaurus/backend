@@ -17,7 +17,11 @@ import {
     AddPlatformEndpoint,
     DeletePlatformEndpoint,
     GetPlatformEndpoint,
-    GetPlatformsEndpoint
+    GetPlatformsEndpoint,
+    AddPublisherEndpoint,
+    DeletePublisherEndpoint,
+    GetPublisherEndpoint,
+    GetPublishersEndpoint
 } from './mod.ts';
 
 function use(endpoint: Endpoint) {
@@ -49,10 +53,15 @@ export function endpoints(): Router {
     router.get('/platforms/:platformId', use(new GetPlatformEndpoint()));
     router.delete('/platforms/:platformId', use(new DeletePlatformEndpoint()));
 
+    router.get('/publishers', use(new GetPublishersEndpoint()));
+    router.post('/publishers', use(new AddPublisherEndpoint()));
+    router.get('/publishers/:publisherId', use(new GetPublisherEndpoint()));
+    router.delete('/publishers/:publisherId', use(new DeletePublisherEndpoint()));
+
 
     //getAllWishlistedGames | semantic search
 
-    //platofrm,publisher,developer,genre
+    //,publisher,developer,genre
     //get,post,delete
 
     //getState

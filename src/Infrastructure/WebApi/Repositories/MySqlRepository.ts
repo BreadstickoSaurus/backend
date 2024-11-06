@@ -1,5 +1,5 @@
 import type { GameFull } from '../db/models/GameFullModel.ts';
-import { Database, User, Game, ForeignKeyError, type Platform } from "../mod.ts";
+import { Database, User, Game, ForeignKeyError, type Platform, type Publisher } from "../mod.ts";
 import { AuthenticationError, ValidationError } from "../mod.ts";
 
 export class MySqlRepository {
@@ -490,6 +490,76 @@ export class MySqlRepository {
             }
         } catch (error) {
             console.error("Error in deletePlatform:", error);
+            if(error instanceof ValidationError) throw error;
+            throw new Error("Database error");
+        }
+    }
+
+    async addPublisher(publisher: Publisher): Promise<number> {
+        try {
+            const result = await this.db.getClient().execute(
+                'INSERT INTO publishers (publisher_name, publisher_description, country_code) VALUES (?,?,?)',
+                [publisher.publisher_name, publisher.publisher_description, publisher.country_code]
+            );
+
+            if (result.affectedRows === 0) {
+                throw new ValidationError('Publisher not added');
+            }
+
+            const publisherId = result.lastInsertId;
+            if (publisherId === undefined) {
+                throw new Error('Failed to retrieve publisher ID');
+            }
+
+            return publisherId;
+        } catch (error) {
+            console.error("Error in addPublisher:", error);
+            if ((error as Error).message.includes("Duplicate entry")) {
+                throw new ValidationError('Publisher already exists');
+            }
+            throw new Error("Database error");
+        }
+    }
+
+    async getPublishers(): Promise<Publisher[]> {
+        try {
+            const result = await this.db.getClient().execute('SELECT * FROM publishers');
+            if (!result.rows) {
+                throw new ValidationError('Publishers not found');
+            }
+            return result.rows as Publisher[];
+        } catch (error) {
+            console.error("Error in getPublishers:", error);
+            if(error instanceof ValidationError) throw error;
+            throw new Error("Database error");
+        }
+    }
+
+    async getPublisher(publisherId: number): Promise<Publisher> {
+        try {
+            const result = await this.db.getClient().execute('SELECT * FROM publishers WHERE publisher_id = ?', [publisherId]);
+
+            if (!result.rows || result.rows.length === 0) {
+                throw new ValidationError('Publisher not found');
+            }
+
+            return result.rows[0] as Publisher;
+        } catch (error) {
+            console.error("Error in getPublisher:", error);
+            if(error instanceof ValidationError) throw error;
+            throw new Error("Database error");
+        }
+    }
+
+    async deletePublisher(publisherId: number): Promise<void> {
+        try {
+            const result = await this.db.getClient().execute('DELETE FROM publishers WHERE publisher_id = ?', [publisherId]);
+
+            if (result.affectedRows === 0) {
+                throw new ValidationError('Publisher not found');
+            }
+        } catch (error) {
+            console.error("Error in deletePublisher:", error);
             if(error instanceof ValidationError) throw error;
             throw new Error("Database error");
         }
