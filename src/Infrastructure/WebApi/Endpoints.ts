@@ -13,7 +13,11 @@ import {
     AddImageToGameEndpoint,
     getImageUrlsFromGame,
     DeleteImageFromGameEndpoint,
-    DeleteGameEndpoint
+    DeleteGameEndpoint,
+    AddPlatformEndpoint,
+    DeletePlatformEndpoint,
+    GetPlatformEndpoint,
+    GetPlatformsEndpoint
 } from './mod.ts';
 
 function use(endpoint: Endpoint) {
@@ -39,6 +43,11 @@ export function endpoints(): Router {
     router.post('/game/:gameId/images', use(new AddImageToGameEndpoint()));
     router.get('/game/:gameId/images', use(new getImageUrlsFromGame()));
     router.delete('/game/:gameId/images', use(new DeleteImageFromGameEndpoint()));
+
+    router.get('/platforms', use(new GetPlatformsEndpoint()));
+    router.post('/platforms', use(new AddPlatformEndpoint()));
+    router.get('/platforms/:platformId', use(new GetPlatformEndpoint()));
+    router.delete('/platforms/:platformId', use(new DeletePlatformEndpoint()));
 
 
     //getAllWishlistedGames | semantic search

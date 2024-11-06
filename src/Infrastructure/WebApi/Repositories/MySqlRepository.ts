@@ -1,5 +1,5 @@
 import type { GameFull } from '../db/models/GameFullModel.ts';
-import { Database, User, Game, ForeignKeyError } from "../mod.ts";
+import { Database, User, Game, ForeignKeyError, type Platform } from "../mod.ts";
 import { AuthenticationError, ValidationError } from "../mod.ts";
 
 export class MySqlRepository {
@@ -420,6 +420,76 @@ export class MySqlRepository {
             }
         } catch (error) {
             console.error("Error in deleteGame:", error);
+            if(error instanceof ValidationError) throw error;
+            throw new Error("Database error");
+        }
+    }
+
+    async addPlatform(platform: Platform): Promise<number> {
+        try {
+            const result = await this.db.getClient().execute(
+                'INSERT INTO platforms (platform_name,platform_description,release_date) VALUES (?,?,?)',
+                [platform.platform_name, platform.platform_description, platform.release_date]
+            );
+
+            if (result.affectedRows === 0) {
+                throw new ValidationError('Platform not added');
+            }
+
+            const platformId = result.lastInsertId;
+            if (platformId === undefined) {
+                throw new Error('Failed to retrieve platform ID');
+            }
+
+            return platformId;
+        } catch (error) {
+            console.error("Error in addPlatform:", error);
+            if ((error as Error).message.includes("Duplicate entry")) {
+                throw new ValidationError('Platform already exists');
+            }
+            throw new Error("Database error");
+        }
+    }
+
+    async getPlatforms(): Promise<Platform[]> {
+        try {
+            const result = await this.db.getClient().execute('SELECT * FROM platforms');
+            if (!result.rows) {
+                throw new ValidationError('Platforms not found');
+            }
+            return result.rows as Platform[];
+        } catch (error) {
+            console.error("Error in getPlatforms:", error);
+            if(error instanceof ValidationError) throw error;
+            throw new Error("Database error");
+        }
+    }
+
+    async getPlatform(platformId: number): Promise<Platform> {
+        try {
+            const result = await this.db.getClient().execute('SELECT * FROM platforms WHERE platform_id = ?', [platformId]);
+
+            if (!result.rows || result.rows.length === 0) {
+                throw new ValidationError('Platform not found');
+            }
+
+            return result.rows[0] as Platform;
+        } catch (error) {
+            console.error("Error in getPlatform:", error);
+            if(error instanceof ValidationError) throw error;
+            throw new Error("Database error");
+        }
+    }
+
+    async deletePlatform(platformId: number): Promise<void> {
+        try {
+            const result = await this.db.getClient().execute('DELETE FROM platforms WHERE platform_id = ?', [platformId]);
+
+            if (result.affectedRows === 0) {
+                throw new ValidationError('Platform not found');
+            }
+        } catch (error) {
+            console.error("Error in deletePlatform:", error);
             if(error instanceof ValidationError) throw error;
             throw new Error("Database error");
         }
