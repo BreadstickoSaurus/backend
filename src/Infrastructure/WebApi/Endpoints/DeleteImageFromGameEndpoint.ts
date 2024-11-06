@@ -4,7 +4,7 @@ import { ImageController, ValidationError, type Endpoint } from '../mod.ts';
 import type { RouterContext } from '@oak/oak';
 
 
-export class DeleteImageFromGame implements Endpoint{
+export class DeleteImageFromGameEndpoint implements Endpoint{
     private readonly _errorsBag = new ErrorsBag();
 
     private readonly deleteImageFromGameSchema = z.object({
@@ -26,7 +26,7 @@ export class DeleteImageFromGame implements Endpoint{
             }
             
             const controller = new ImageController();
-            controller.DeleteImage(parseInt(gameId), body.imageUrl);
+            await controller.DeleteImage(parseInt(gameId), body.imageUrl);
 
             context.response.status = 200;
             context.response.body = { 

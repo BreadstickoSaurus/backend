@@ -13,7 +13,9 @@ export { GetGameDetailsEndpoint } from './Endpoints/GetGameDetailsEndpoint.ts';
 export { UpdateGameEndpoint } from './Endpoints/UpdateGameEndpoint.ts';
 export { AddImageToGameEndpoint } from './Endpoints/AddImageToGameEndpoint.ts';
 export { getImageUrlsFromGame } from './Endpoints/getImageUrlsFromGame.ts';
-export { DeleteImageFromGame } from './Endpoints/DeleteImageFromGame.ts';
+export { DeleteImageFromGameEndpoint } from './Endpoints/DeleteImageFromGameEndpoint.ts';
+export { DeleteGameEndpoint } from './Endpoints/DeleteGameEndpoint.ts';
+
 
 export { Database } from './db/Database.ts';
 export type { User } from './db/models/UserModel.ts';
@@ -29,6 +31,7 @@ export { GetGamesFromCollectionController } from './Controllers/GetGamesFromColl
 export { GetGameDetailsController } from './Controllers/GetGameDetailsController.ts';
 export { UpdateGameController } from './Controllers/UpdateGameController.ts';
 export { ImageController } from './Controllers/ImageController.ts';
+export { DeleteGameController } from './Controllers/DeleteGameController.ts';
 
 export { ValidationError, AuthenticationError, ForeignKeyError } from './Shared/Errors.ts';
 

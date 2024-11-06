@@ -367,6 +367,7 @@ export class MySqlRepository {
 
         } catch (error) {
             console.error("Error in addImagesToGame:", error);
+            if(error instanceof ValidationError) throw error;
             throw new Error("Database error");
         }
     }
@@ -385,6 +386,7 @@ export class MySqlRepository {
             return result.rows.map((row: any) => row.image_url);
         } catch (error) {
             console.error("Error in getImagesFromGame:", error);
+            if(error instanceof ValidationError) throw error;
             throw new Error("Database error");
         }
     }
@@ -401,6 +403,24 @@ export class MySqlRepository {
             }
         } catch (error) {
             console.error("Error in deleteImageFromGame:", error);
+            if(error instanceof ValidationError) throw error;
+            throw new Error("Database error");
+        }
+    }
+
+    async deleteGame(gameId: number): Promise<void> {
+        try {
+            const result = await this.db.getClient().execute(
+                'DELETE FROM games WHERE game_id = ?',
+                [gameId]
+            );
+
+            if (result.affectedRows === 0) {
+                throw new ValidationError("Game not found");
+            }
+        } catch (error) {
+            console.error("Error in deleteGame:", error);
+            if(error instanceof ValidationError) throw error;
             throw new Error("Database error");
         }
     }

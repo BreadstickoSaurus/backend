@@ -1,5 +1,4 @@
 import { ServiceLocator } from '../../Shared/mod.ts';
-import type { DeleteImageFromGame } from '../Endpoints/DeleteImageFromGame.ts';
 import type { MySqlRepository } from '../mod.ts';
 import { readAll } from "@std/io/read-all";
 
