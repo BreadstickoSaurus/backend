@@ -388,5 +388,20 @@ export class MySqlRepository {
             throw new Error("Database error");
         }
     }
-    
+
+    async deleteImageFromGame(gameId: number, imageUrl: string): Promise<void> {
+        try {
+            const result = await this.db.getClient().execute(
+                'DELETE FROM images WHERE game_id = ? AND image_url = ?',
+                [gameId, imageUrl]
+            );
+
+            if (result.affectedRows === 0) {
+                throw new ValidationError("Image not found");
+            }
+        } catch (error) {
+            console.error("Error in deleteImageFromGame:", error);
+            throw new Error("Database error");
+        }
+    }
 }

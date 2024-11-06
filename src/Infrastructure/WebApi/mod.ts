@@ -13,6 +13,7 @@ export { GetGameDetailsEndpoint } from './Endpoints/GetGameDetailsEndpoint.ts';
 export { UpdateGameEndpoint } from './Endpoints/UpdateGameEndpoint.ts';
 export { AddImageToGameEndpoint } from './Endpoints/AddImageToGameEndpoint.ts';
 export { getImageUrlsFromGame } from './Endpoints/getImageUrlsFromGame.ts';
+export { DeleteImageFromGame } from './Endpoints/DeleteImageFromGame.ts';
 
 export { Database } from './db/Database.ts';
 export type { User } from './db/models/UserModel.ts';
