@@ -28,12 +28,18 @@ export { AddPublisherEndpoint } from './Endpoints/Publishers/AddPublisherEndpoin
 export { DeletePublisherEndpoint } from './Endpoints/Publishers/DeletePublisherEndpoint.ts';
 export { GetPublisherEndpoint } from './Endpoints/Publishers/GetPublisherEndpoint.ts';
 
+export { GetDevelopersEndpoint } from './Endpoints/Developers/GetDevelopersEndpoint.ts';
+export { GetDeveloperEndpoint } from './Endpoints/Developers/GetDeveloperEndpoint.ts';
+export { DeleteDeveloperEndpoint } from './Endpoints/Developers/DeleteDeveloperEndpoint.ts';
+export { AddDeveloperEndpoint } from './Endpoints/Developers/AddDeveloperEndpoint.ts';
+
 export { Database } from './db/Database.ts';
 export type { User } from './db/models/UserModel.ts';
 export type { Game } from './db/models/GameModel.ts';
 export type { GameFull } from './db/models/GameFullModel.ts';
 export type { Platform } from './db/models/PlatformModel.ts';
 export type { Publisher } from './db/models/PublisherModel.ts';
+export type { Developer } from './db/models/DeveloperModel.ts';
  
 export { MySqlRepository } from './Repositories/MySqlRepository.ts';
 
@@ -42,7 +48,7 @@ export { AuthenticationController } from './Controllers/AuthenticationController
 export { ImageController } from './Controllers/ImageController.ts';
 export { PlatformController } from './Controllers/PlatformController.ts';
 export { PublisherController } from './Controllers/PublisherController.ts';
-// export { DeveloperController } from './Controllers/DeveloperController.ts';}
+export { DeveloperController } from './Controllers/DeveloperController.ts';
 // export { GenreController } from './Controllers/GenreController.ts';
 // export { StateController } from './Controllers/StateController.ts';
 

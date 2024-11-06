@@ -1,5 +1,5 @@
 import type { GameFull } from '../db/models/GameFullModel.ts';
-import { Database, User, Game, ForeignKeyError, type Platform, type Publisher } from "../mod.ts";
+import { Database, User, Game, ForeignKeyError, type Platform, type Publisher, type Developer } from "../mod.ts";
 import { AuthenticationError, ValidationError } from "../mod.ts";
 
 export class MySqlRepository {
@@ -560,6 +560,76 @@ export class MySqlRepository {
             }
         } catch (error) {
             console.error("Error in deletePublisher:", error);
+            if(error instanceof ValidationError) throw error;
+            throw new Error("Database error");
+        }
+    }
+
+    async addDeveloper(developer: Developer): Promise<number> {
+        try {
+            const result = await this.db.getClient().execute(
+                'INSERT INTO developers (developer_name, developer_description, country_code) VALUES (?,?,?)',
+                [developer.developer_name, developer.developer_description, developer.country_code]
+            );
+
+            if (result.affectedRows === 0) {
+                throw new ValidationError('Developer not added');
+            }
+
+            const developerId = result.lastInsertId;
+            if (developerId === undefined) {
+                throw new Error('Failed to retrieve developer ID');
+            }
+
+            return developerId;
+        } catch (error) {
+            console.error("Error in addDeveloper:", error);
+            if ((error as Error).message.includes("Duplicate entry")) {
+                throw new ValidationError('Developer already exists');
+            }
+            throw new Error("Database error");
+        }
+    }
+
+    async getDevelopers(): Promise<Developer[]> {
+        try {
+            const result = await this.db.getClient().execute('SELECT * FROM developers');
+            if (!result.rows) {
+                throw new ValidationError('Developers not found');
+            }
+            return result.rows as Developer[];
+        } catch (error) {
+            console.error("Error in getDevelopers:", error);
+            if(error instanceof ValidationError) throw error;
+            throw new Error("Database error");
+        }
+    }
+
+    async getDeveloper(developerId: number): Promise<Developer> {
+        try {
+            const result = await this.db.getClient().execute('SELECT * FROM developers WHERE developer_id = ?', [developerId]);
+
+            if (!result.rows || result.rows.length === 0) {
+                throw new ValidationError('Developer not found');
+            }
+
+            return result.rows[0] as Developer;
+        } catch (error) {
+            console.error("Error in getDeveloper:", error);
+            if(error instanceof ValidationError) throw error;
+            throw new Error("Database error");
+        }
+    }
+
+    async deleteDeveloper(developerId: number): Promise<void> {
+        try {
+            const result = await this.db.getClient().execute('DELETE FROM developers WHERE developer_id = ?', [developerId]);
+
+            if (result.affectedRows === 0) {
+                throw new ValidationError('Developer not found');
+            }
+        } catch (error) {
+            console.error("Error in deleteDeveloper:", error);
             if(error instanceof ValidationError) throw error;
             throw new Error("Database error");
         }

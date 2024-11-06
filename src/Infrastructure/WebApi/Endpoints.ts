@@ -21,7 +21,11 @@ import {
     AddPublisherEndpoint,
     DeletePublisherEndpoint,
     GetPublisherEndpoint,
-    GetPublishersEndpoint
+    GetPublishersEndpoint,
+    AddDeveloperEndpoint,
+    DeleteDeveloperEndpoint,
+    GetDeveloperEndpoint,
+    GetDevelopersEndpoint
 } from './mod.ts';
 
 function use(endpoint: Endpoint) {
@@ -58,11 +62,15 @@ export function endpoints(): Router {
     router.get('/publishers/:publisherId', use(new GetPublisherEndpoint()));
     router.delete('/publishers/:publisherId', use(new DeletePublisherEndpoint()));
 
+    router.get('/developers', use(new GetDevelopersEndpoint()));
+    router.get('/developers/:developerId', use(new GetDeveloperEndpoint()));
+    router.delete('/developers/:developerId', use(new DeleteDeveloperEndpoint()));
+    router.post('/developers', use(new AddDeveloperEndpoint()));
+
 
     //getAllWishlistedGames | semantic search
 
-    //,publisher,developer,genre
-    //get,post,delete
+    //developer,genre
 
     //getState
 
