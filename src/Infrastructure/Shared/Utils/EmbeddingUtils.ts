@@ -1,13 +1,17 @@
+import * as dotenv from '@dotenv';
+
 function delay(ms: number) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 export async function getEmbedding(text: string): Promise<number[]> {
     try {
+        const apiKey = dotenv.config().API_KEY;
+
         const response = await fetch("https://api.cohere.ai/v1/embed", {
             method: "POST",
             headers: {
-                "Authorization": `Bearer c2FAF3eSGeYWzGqB0Y1dR4mgot37uk1TTmumQ9OJ`,  // Replace with your actual API key
+                "Authorization": `Bearer ${apiKey}`,  // Replace with your actual API key
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
