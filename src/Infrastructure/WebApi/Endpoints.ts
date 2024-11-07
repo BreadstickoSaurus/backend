@@ -31,7 +31,8 @@ import {
     GetGenreEndpoint,
     GetGenresEndpoint,
     GetStatesEndpoint,
-    GetCountriesEndpoint
+    GetCountriesEndpoint,
+    SemanticSearchEndpoint
 } from './mod.ts';
 
 function use(endpoint: Endpoint) {
@@ -81,9 +82,9 @@ export function endpoints(): Router {
     router.get('/states', use(new GetStatesEndpoint()));
     router.get('/countries', use(new GetCountriesEndpoint()));
 
-    //getCountries
+    router.post('/game/search/semantic', use(new SemanticSearchEndpoint()));
+    //search purely on text
 
-    //getAllWishlistedGames | semantic search
 
     //ShareCollection? > aparte link /private/public
     //toggle to enable share collection(volg systeem)
@@ -101,17 +102,5 @@ export function endpoints(): Router {
     //collection/subscribed/:userId/:gameId
 
     //(offline)
-
-
-
-
-
-
-    //filter very precies, semantic search only name, appachesolr
-    //final fantasy dummy data
-    //reverse 2dehands
-
-
-
     return router;
 }

@@ -140,7 +140,7 @@ export class MySqlRepository {
             }
             const result = await this.db.getClient().execute(
                 'INSERT INTO games (game_title, game_description, release_date, state_id, platform_id, release_country_code, publisher_id, developer_id, genre_id, collection_id, wishlisted) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
-                [data.title, data.description, data.releaseDate, data.stateId, data.platformId, data.ReleaseCountryCode, data.publisherID, data.developerID, data.genreId, data.collectionId, wishlisted]
+                [data.game_title, data.game_description, data.releaseDate, data.stateId, data.platformId, data.ReleaseCountryCode, data.publisherID, data.developerID, data.genreId, data.collectionId, wishlisted]
             );
 
             if (result.affectedRows === 0) {
@@ -267,9 +267,9 @@ export class MySqlRepository {
     
             // Map to GameFull structure
             const game: GameFull = {
-                id: row.id,
-                title: row.title,
-                description: row.description,
+                game_id: row.id,
+                game_title: row.title,
+                game_description: row.description,
                 releaseDate: row.releaseDate,
                 collectionId: row.collectionId,
                 wishlisted: row.wishlisted,
@@ -313,8 +313,8 @@ export class MySqlRepository {
                     game_id = ?
                 `,
                 [
-                    data.title, 
-                    data.description, 
+                    data.game_title, 
+                    data.game_description, 
                     data.releaseDate, 
                     data.stateId, 
                     data.platformId, 
@@ -729,6 +729,79 @@ export class MySqlRepository {
         } catch (error) {
             console.error("Error in getCountries:", error);
             if(error instanceof ValidationError) throw error;
+            throw new Error("Database error");
+        }
+    }
+
+    async getAllWishlistGamesFull() : Promise<GameFull[]> {
+        try {
+            const result = await this.db.getClient().execute(
+            `
+            SELECT 
+                g.game_id AS id,
+                g.game_title AS title,
+                g.game_description AS description,
+                g.release_date AS releaseDate,
+                g.collection_id AS collectionId,
+                g.wishlisted,
+                s.state_name AS state,
+                p.platform_name AS platform,
+                c.country_name AS ReleaseCountry,
+                pub.publisher_name AS publisher,
+                d.developer_name AS developer,
+                gen.genre_name AS genre,
+                GROUP_CONCAT(DISTINCT img.image_url) AS images,
+                GROUP_CONCAT(DISTINCT alt.alt_title) AS altTitles
+            FROM 
+                games g
+            JOIN 
+                game_states s ON g.state_id = s.state_id
+            JOIN 
+                platforms p ON g.platform_id = p.platform_id
+            JOIN 
+                countries c ON g.release_country_code = c.country_code
+            JOIN 
+                publishers pub ON g.publisher_id = pub.publisher_id
+            JOIN 
+                developers d ON g.developer_id = d.developer_id
+            JOIN 
+                genres gen ON g.genre_id = gen.genre_id
+            LEFT JOIN 
+                images img ON g.game_id = img.game_id
+            LEFT JOIN 
+                alt_titles alt ON g.game_id = alt.game_id
+            WHERE 
+                g.wishlisted = 1
+            GROUP BY 
+                g.game_id, g.game_title, g.game_description, g.release_date, g.collection_id, g.wishlisted,
+                s.state_name, p.platform_name, c.country_name, pub.publisher_name, d.developer_name, gen.genre_name
+            `
+            );
+
+            if (!result.rows || result.rows.length === 0) {
+            throw new ValidationError("No wishlisted games found");
+            }
+
+            const games: GameFull[] = result.rows.map((row: any) => ({
+            game_id: row.id,
+            game_title: row.title,
+            game_description: row.description,
+            releaseDate: row.releaseDate,
+            collectionId: row.collectionId,
+            wishlisted: row.wishlisted,
+            state: row.state,
+            platform: row.platform,
+            ReleaseCountry: row.ReleaseCountry,
+            publisher: row.publisher,
+            developer: row.developer,
+            genre: row.genre,
+            images: row.images ? row.images.split(",") : [],
+            altTitles: row.altTitles ? row.altTitles.split(",") : []
+            }));
+            return games;
+        } catch (error) {
+            console.error("Error in getAllWishlistGamesFull:", error);
+            if (error instanceof ValidationError) throw error;
             throw new Error("Database error");
         }
     }

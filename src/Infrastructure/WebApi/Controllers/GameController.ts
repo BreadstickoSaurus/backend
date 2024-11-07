@@ -1,11 +1,15 @@
 import { ServiceLocator } from '../../Shared/mod.ts';
 import type { MySqlRepository, GameFull, Game } from '../mod.ts';
+import { SemanticSearchService } from '../../Shared/mod.ts';
+import { promise } from '@zod';
 
 export class GameController {
     private repository: MySqlRepository
+    private searchService: SemanticSearchService
 
     constructor() {
         this.repository = ServiceLocator.get<MySqlRepository>('MySqlRepository');
+        this.searchService = new SemanticSearchService();
     }
 
     async getCollectionId(gameId: number): Promise<number> {
@@ -91,6 +95,16 @@ export class GameController {
             const gameId = await this.repository.addGameToCol(data);
             return gameId;
         } catch(error){
+            throw error;
+        }
+    }
+
+    async getGamesUsingSemanticSearch(query: string): Promise<GameFull[]>{
+        try{
+            const games = await this.repository.getAllWishlistGamesFull();
+            const result = this.searchService.findSimilarGames(query, games);
+            return result;
+        }catch(error){
             throw error;
         }
     }

@@ -70,8 +70,8 @@ export class UpdateGameEndpoint implements Endpoint {
     }
     mapData(data: any, colId: number, wishl: number): Game {
         return {
-            title: data.title,
-            description: data.description,
+            game_title: data.title,
+            game_description: data.description,
             releaseDate: data.releaseDate,
             collectionId: colId,
             wishlisted: wishl,
