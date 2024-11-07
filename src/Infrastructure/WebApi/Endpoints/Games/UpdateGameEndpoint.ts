@@ -60,7 +60,7 @@ export class UpdateGameEndpoint implements Endpoint {
                 context.response.body = { error: "Error during update of game", details: error.message };
             }else if(error instanceof ForeignKeyError){
                 context.response.status = 400;
-                context.response.body = { error: "Error during update of game", details: error.message };
+                context.response.body = { error: "One of the given id's does not exist", details: error.message };
 
             }else{
                 context.response.status = 500;

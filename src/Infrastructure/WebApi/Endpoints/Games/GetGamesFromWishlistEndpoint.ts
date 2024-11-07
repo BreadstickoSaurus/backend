@@ -18,7 +18,7 @@ export class GetGamesFromWishlistEndpoint implements Endpoint {
         }catch(error) {
             if(error instanceof ValidationError){
                 context.response.status = 400;
-                context.response.body = { error: "Game not found in wishlist" };
+                context.response.body = { error: "Wishlist not found" };
             }else if(error instanceof AuthenticationError){
                 context.response.status = 401;
                 context.response.body = { error: "User wishlist not found" };

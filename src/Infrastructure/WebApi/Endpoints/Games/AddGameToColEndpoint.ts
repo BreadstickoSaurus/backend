@@ -56,7 +56,7 @@ export class AddGameToColEndpoint implements Endpoint {
         }catch (error) {
             if(error instanceof ForeignKeyError){
                 context.response.status = 400;
-                context.response.body = { error: "check your id('s)", details: error.message };
+                context.response.body = { error: "One of the id's does noet exist", details: error.message };
             }else{
                 context.response.status = 500;
                 context.response.body = { error: "Internal server error" };
