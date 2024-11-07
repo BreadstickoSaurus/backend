@@ -30,7 +30,8 @@ import {
     DeleteGenreEndpoint,
     GetGenreEndpoint,
     GetGenresEndpoint,
-    GetStatesEndpoint
+    GetStatesEndpoint,
+    GetCountriesEndpoint
 } from './mod.ts';
 
 function use(endpoint: Endpoint) {
@@ -78,6 +79,7 @@ export function endpoints(): Router {
     router.post('/genres', use(new AddGenreEndpoint()));
 
     router.get('/states', use(new GetStatesEndpoint()));
+    router.get('/countries', use(new GetCountriesEndpoint()));
 
     //getCountries
 

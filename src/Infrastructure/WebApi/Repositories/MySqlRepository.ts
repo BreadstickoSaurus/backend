@@ -1,5 +1,5 @@
 import type { GameFull } from '../db/models/GameFullModel.ts';
-import { Database, User, Game, ForeignKeyError, type Platform, type Publisher, type Developer, type Genre, type State } from "../mod.ts";
+import { Database, User, Game, ForeignKeyError, type Platform, type Publisher, type Developer, type Genre, type State, type Country } from "../mod.ts";
 import { AuthenticationError, ValidationError } from "../mod.ts";
 
 export class MySqlRepository {
@@ -714,6 +714,20 @@ export class MySqlRepository {
             return result.rows as State[];
         } catch (error) {
             console.error("Error in getStates:", error);
+            if(error instanceof ValidationError) throw error;
+            throw new Error("Database error");
+        }
+    }
+
+    async getCountries(): Promise<Country[]> {
+        try {
+            const result = await this.db.getClient().execute('SELECT * FROM countries');
+            if (!result.rows) {
+                throw new ValidationError('Countries not found');
+            }
+            return result.rows as Country[];
+        } catch (error) {
+            console.error("Error in getCountries:", error);
             if(error instanceof ValidationError) throw error;
             throw new Error("Database error");
         }

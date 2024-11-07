@@ -39,6 +39,7 @@ export { DeleteGenreEndpoint } from './Endpoints/Genres/DeleteGenreEndpoint.ts';
 export { AddGenreEndpoint } from './Endpoints/Genres/AddGenreEndpoint.ts';
 
 export { GetStatesEndpoint } from './Endpoints/States/GetStatesEndpoint.ts';
+export { GetCountriesEndpoint } from './Endpoints/Countries/GetCountriesEndpoint.ts';
 
 export { Database } from './db/Database.ts';
 export type { User } from './db/models/UserModel.ts';
@@ -49,6 +50,7 @@ export type { Publisher } from './db/models/PublisherModel.ts';
 export type { Developer } from './db/models/DeveloperModel.ts';
 export type { Genre } from './db/models/GenreModel.ts';
 export type { State } from './db/models/StateModel.ts';
+export type { Country } from './db/models/CountryModel.ts';
  
 export { MySqlRepository } from './Repositories/MySqlRepository.ts';
 
@@ -60,6 +62,7 @@ export { PublisherController } from './Controllers/PublisherController.ts';
 export { DeveloperController } from './Controllers/DeveloperController.ts';
 export { GenreController } from './Controllers/GenreController.ts';
 export { StateController } from './Controllers/StateController.ts';
+export { CountryController } from './Controllers/CountryController.ts';
 
 export { ValidationError, AuthenticationError, ForeignKeyError } from './Shared/Errors.ts';
 
