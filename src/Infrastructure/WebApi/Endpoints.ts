@@ -29,7 +29,8 @@ import {
     AddGenreEndpoint,
     DeleteGenreEndpoint,
     GetGenreEndpoint,
-    GetGenresEndpoint
+    GetGenresEndpoint,
+    GetStatesEndpoint
 } from './mod.ts';
 
 function use(endpoint: Endpoint) {
@@ -76,11 +77,28 @@ export function endpoints(): Router {
     router.delete('/genres/:genreId', use(new DeleteGenreEndpoint()));
     router.post('/genres', use(new AddGenreEndpoint()));
 
+    router.get('/states', use(new GetStatesEndpoint()));
+
+    //getCountries
 
     //getAllWishlistedGames | semantic search
 
-    //getState
-    //getCountries
+    //ShareCollection? > aparte link /private/public
+    //toggle to enable share collection(volg systeem)
+    //subscribe to userId('s) to see there wishlist
+    //(also for wishlists)
+
+    //wishlist/subscribe/:userId(user's id and subscribe id)
+    //wishlist/subscribed
+    //wishlist/subscribed/:userId(subscribe id)
+    //wishlist/subscribed/:userId/:gameId
+
+    //collection/subscribe/:userId(user's id and subscribe id)
+    //collection/subscribed
+    //collection/subscribed/:userId(subscribe id)
+    //collection/subscribed/:userId/:gameId
+
+    //(offline)
 
 
 
