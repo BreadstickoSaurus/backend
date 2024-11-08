@@ -66,8 +66,8 @@ export class AddGameToColEndpoint implements Endpoint {
 
     mapData(data: any): Game {
         return {
-            title: data.title,
-            description: data.description,
+            game_title: data.title,
+            game_description: data.description,
             releaseDate: data.releaseDate,
             collectionId: 0,
             wishlisted: 0,

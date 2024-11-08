@@ -41,6 +41,8 @@ export { AddGenreEndpoint } from './Endpoints/Genres/AddGenreEndpoint.ts';
 export { GetStatesEndpoint } from './Endpoints/States/GetStatesEndpoint.ts';
 export { GetCountriesEndpoint } from './Endpoints/Countries/GetCountriesEndpoint.ts';
 
+export { SemanticSearchEndpoint } from './Endpoints/Games/SemanticSearchEndpoint.ts';
+
 export { Database } from './db/Database.ts';
 export type { User } from './db/models/UserModel.ts';
 export type { Game } from './db/models/GameModel.ts';

@@ -1,7 +1,7 @@
 export interface Game{
-    id?: number;
-    title: string;
-    description: string;
+    game_id?: number;
+    game_title: string;
+    game_description: string;
     releaseDate: Date;
     collectionId: number;
     wishlisted: number;
