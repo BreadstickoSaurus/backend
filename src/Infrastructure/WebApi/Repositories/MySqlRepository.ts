@@ -805,4 +805,26 @@ export class MySqlRepository {
             throw new Error("Database error");
         }
     }
+
+    async addAltTitlesToGame(gameId: number, altTitles: string[]): Promise<void> {
+        try {
+            for (const title of altTitles) {
+                await this.db.getClient().execute('INSERT INTO alt_titles (game_id, alt_title) VALUES (?, ?)', [gameId, title]);
+            }
+        } catch (error) {
+            console.error("Error in addAltTitlesToGame:", error);
+            throw new Error("Database error");
+        }
+    }
+
+    async deleteAltTitlesFromGame(gameId: number, altTitles: string[]): Promise<void> {
+        try {
+            for (const title of altTitles) {
+                await this.db.getClient().execute('DELETE FROM alt_titles WHERE game_id = ? AND alt_title = ?', [gameId, title]);
+            }
+        } catch (error) {
+            console.error("Error in deleteAltTitlesFromGame:", error);
+            throw new Error("Database error");
+        }
+    }
 }

@@ -17,6 +17,8 @@ export { AddImageToGameEndpoint } from './Endpoints/Images/AddImageToGameEndpoin
 export { getImageUrlsFromGame } from './Endpoints/Images/getImageUrlsFromGame.ts';
 export { DeleteImageFromGameEndpoint } from './Endpoints/Images/DeleteImageFromGameEndpoint.ts';
 export { DeleteGameEndpoint } from './Endpoints/Games/DeleteGameEndpoint.ts';
+export { AddAltTitlesToGameEndpoint } from './Endpoints/AltTitles/AddAltTitlesToGameEndpoint.ts';
+export { DeleteAltTitlesFromGameEndpoint } from './Endpoints/AltTitles/DeleteAltTitlesFromGameEndpoint.ts';
 
 export { GetPlatformsEndpoint } from './Endpoints/Platforms/GetPlatformsEndpoint.ts';
 export { AddPlatformEndpoint } from './Endpoints/Platforms/AddPlatformEndpoint.ts';
@@ -65,6 +67,7 @@ export { DeveloperController } from './Controllers/DeveloperController.ts';
 export { GenreController } from './Controllers/GenreController.ts';
 export { StateController } from './Controllers/StateController.ts';
 export { CountryController } from './Controllers/CountryController.ts';
+export { AltTitleController } from './Controllers/AltTitleController.ts';
 
 export { ValidationError, AuthenticationError, ForeignKeyError } from './Shared/Errors.ts';
 

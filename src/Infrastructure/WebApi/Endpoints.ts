@@ -32,7 +32,9 @@ import {
     GetGenresEndpoint,
     GetStatesEndpoint,
     GetCountriesEndpoint,
-    SemanticSearchEndpoint
+    SemanticSearchEndpoint,
+    AddAltTitlesToGameEndpoint,
+    DeleteAltTitlesFromGameEndpoint
 } from './mod.ts';
 
 function use(endpoint: Endpoint) {
@@ -54,10 +56,14 @@ export function endpoints(): Router {
     router.get('/game/:gameId', use(new GetGameDetailsEndpoint()));
     router.put('/game/:gameId', use(new UpdateGameEndpoint()));
     router.delete('/game/:gameId', use(new DeleteGameEndpoint()));
+    //modify to also delete all alt and images
 
     router.post('/game/:gameId/images', use(new AddImageToGameEndpoint()));
     router.get('/game/:gameId/images', use(new getImageUrlsFromGame()));
     router.delete('/game/:gameId/images', use(new DeleteImageFromGameEndpoint()));
+
+    router.post('/game/:gameId/altTitles', use(new AddAltTitlesToGameEndpoint()));
+    router.delete('/game/:gameId/altTitles', use(new DeleteAltTitlesFromGameEndpoint()));
 
     router.get('/platforms', use(new GetPlatformsEndpoint()));
     router.post('/platforms', use(new AddPlatformEndpoint()));
