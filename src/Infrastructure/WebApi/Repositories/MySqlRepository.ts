@@ -816,7 +816,7 @@ export class MySqlRepository {
             wishlisted: row.wishlisted,
             state: row.state,
             platform: row.platform,
-            ReleaseCountry: row.ReleaseCountry,
+            releaseCountry: row.ReleaseCountry,
             publisher: row.publisher,
             developer: row.developer,
             genre: row.genre,
