@@ -14,7 +14,7 @@ export class GetGameDetailsEndpoint implements Endpoint {
 
             const gameOutput = {
                 ...game,
-                releaseDate: game.releaseDate.toISOString().split('T')[0] // Only date part for JSON output
+                releaseDate: game.release_date.toISOString().split('T')[0] // Only date part for JSON output
             };
 
             context.response.status = 200;

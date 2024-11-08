@@ -1,5 +1,5 @@
 import { RouterContext } from '@oak/oak';
-import { ValidationError,GameController, type Endpoint, AuthenticationError } from '../../mod.ts';
+import { ValidationError,GameController, type Endpoint, AuthenticationError, type Game } from '../../mod.ts';
 import { ErrorsBag } from '../../../Shared/mod.ts';
 
 export class GetGamesFromCollectionEndpoint implements Endpoint {
@@ -12,8 +12,13 @@ export class GetGamesFromCollectionEndpoint implements Endpoint {
             const controller = new GameController();
             const games = await controller.getGamesFromCollection(parseInt(userId));
 
+            
+
             context.response.status = 200;
-            context.response.body = games;
+            context.response.body = games.map((game) => ({
+                ...(game as any), // Cast to 'any' to avoid strict type enforcement
+                release_date: game.release_date.toISOString().split('T')[0] // Format releaseDate as a date-only string
+            }));
 
         }catch(error) {
             if(error instanceof ValidationError){

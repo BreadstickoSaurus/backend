@@ -139,7 +139,7 @@ export class MySqlRepository {
             }
             const result = await this.db.getClient().execute(
                 'INSERT INTO games (game_title, game_description, release_date, state_id, platform_id, release_country_code, publisher_id, developer_id, genre_id, collection_id, wishlisted) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
-                [data.game_title, data.game_description, data.releaseDate, data.stateId, data.platformId, data.ReleaseCountryCode, data.publisherID, data.developerID, data.genreId, data.collectionId, wishlisted]
+                [data.game_title, data.game_description, data.release_date, data.stateId, data.platformId, data.ReleaseCountryCode, data.publisherID, data.developerID, data.genreId, data.collectionId, wishlisted]
             );
 
             if (result.affectedRows === 0) {
@@ -275,7 +275,7 @@ export class MySqlRepository {
                 game_id: row.id,
                 game_title: row.title,
                 game_description: row.description,
-                releaseDate: row.releaseDate,
+                release_date: row.releaseDate,
                 collectionId: row.collectionId,
                 wishlisted: row.wishlisted,
                 state: {
@@ -338,7 +338,7 @@ export class MySqlRepository {
                 [
                     data.game_title, 
                     data.game_description, 
-                    data.releaseDate, 
+                    data.release_date, 
                     data.stateId, 
                     data.platformId, 
                     data.ReleaseCountryCode, 
@@ -811,7 +811,7 @@ export class MySqlRepository {
             game_id: row.id,
             game_title: row.title,
             game_description: row.description,
-            releaseDate: row.releaseDate,
+            release_date: row.releaseDate,
             collectionId: row.collectionId,
             wishlisted: row.wishlisted,
             state: row.state,

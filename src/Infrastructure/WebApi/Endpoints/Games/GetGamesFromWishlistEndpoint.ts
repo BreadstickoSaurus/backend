@@ -13,7 +13,10 @@ export class GetGamesFromWishlistEndpoint implements Endpoint {
             const games = await controller.getGameFromWishlist(parseInt(userId));
 
             context.response.status = 200;
-            context.response.body = games;
+            context.response.body = games.map((game) => ({
+                ...(game as any), // Cast to 'any' to avoid strict type enforcement
+                release_date: game.release_date.toISOString().split('T')[0] // Format releaseDate as a date-only string
+            }));
 
         }catch(error) {
             if(error instanceof ValidationError){
