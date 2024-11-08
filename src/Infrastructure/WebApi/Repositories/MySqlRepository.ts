@@ -224,12 +224,18 @@ export class MySqlRepository {
                     g.release_date AS releaseDate,
                     g.collection_id AS collectionId,
                     g.wishlisted,
-                    s.state_name AS state,
-                    p.platform_name AS platform,
-                    c.country_name AS ReleaseCountry,
-                    pub.publisher_name AS publisher,
-                    d.developer_name AS developer,
-                    gen.genre_name AS genre,
+                    s.state_name AS stateName,
+                    s.state_id AS stateId,
+                    p.platform_name AS platformName,
+                    p.platform_id AS platformId,
+                    c.country_name AS ReleaseCountryName,
+                    c.country_code AS ReleaseCountryCode,
+                    pub.publisher_name AS publisherName,
+                    pub.publisher_id AS publisherId,
+                    d.developer_name AS developerName,
+                    d.developer_id AS developerId,
+                    gen.genre_name AS genreName,
+                    gen.genre_id AS genreId,
                     GROUP_CONCAT(DISTINCT img.image_url) AS images,   -- Aggregate images
                     GROUP_CONCAT(DISTINCT alt.alt_title) AS altTitles -- Aggregate alt titles
                 FROM 
@@ -273,12 +279,30 @@ export class MySqlRepository {
                 releaseDate: row.releaseDate,
                 collectionId: row.collectionId,
                 wishlisted: row.wishlisted,
-                state: row.state,
-                platform: row.platform,
-                ReleaseCountry: row.ReleaseCountry,
-                publisher: row.publisher,
-                developer: row.developer,
-                genre: row.genre,
+                state: {
+                    name: row.stateName,
+                    id: row.stateId
+                },
+                platform: {
+                    name: row.platformName,
+                    id: row.platformId
+                },
+                releaseCountry: {
+                    name: row.ReleaseCountryName,
+                    code: row.ReleaseCountryCode
+                },
+                publisher: {
+                    name: row.publisherName,
+                    id: row.publisherId
+                },
+                developer: {
+                    name: row.developerName,
+                    id: row.developerId
+                },
+                genre: {
+                    name: row.genreName,
+                    id: row.genreId
+                },
                 images: row.images ? row.images.split(",") : [],            // Split images into an array
                 altTitles: row.altTitles ? row.altTitles.split(",") : []     // Split alt titles into an array
             };

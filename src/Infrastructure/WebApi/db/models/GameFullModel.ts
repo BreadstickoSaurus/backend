@@ -5,12 +5,12 @@ export interface GameFull {
     releaseDate: Date;
     collectionId: number;
     wishlisted: boolean;
-    state: string;
-    platform: string; 
-    ReleaseCountry: string; 
-    publisher: string; 
-    developer: string; 
-    genre: string;
+    state: object;
+    platform: object; 
+    releaseCountry: object; 
+    publisher: object; 
+    developer: object; 
+    genre: object;
     images: string[];
     altTitles: string[]; 
 }
