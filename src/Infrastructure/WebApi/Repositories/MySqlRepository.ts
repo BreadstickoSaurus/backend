@@ -433,6 +433,8 @@ export class MySqlRepository {
 
     async deleteGame(gameId: number): Promise<void> {
         try {
+            await this.db.getClient().execute('DELETE FROM images WHERE game_id = ?', [gameId]);
+            await this.db.getClient().execute('DELETE FROM alt_titles WHERE game_id = ?', [gameId]);
             const result = await this.db.getClient().execute(
                 'DELETE FROM games WHERE game_id = ?',
                 [gameId]
