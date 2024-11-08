@@ -49,7 +49,7 @@ export class UpdateGameEndpoint implements Endpoint {
             const mappedData = this.mapData(data, collectionId, wishlisted);
 
             const updatedGameId = await controller.updateGame(parseInt(gameId), mappedData);
-            await controller.updateAltTitles(parseInt(gameId), data.altTitles);
+            //await controller.updateAltTitles(parseInt(gameId), data.altTitles);
 
             context.response.status = 200;
             context.response.body = { updatedGameId };

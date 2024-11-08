@@ -56,7 +56,6 @@ export function endpoints(): Router {
     router.get('/game/:gameId', use(new GetGameDetailsEndpoint()));
     router.put('/game/:gameId', use(new UpdateGameEndpoint()));
     router.delete('/game/:gameId', use(new DeleteGameEndpoint()));
-    //modify to also delete all alt and images
 
     router.post('/game/:gameId/images', use(new AddImageToGameEndpoint()));
     router.get('/game/:gameId/images', use(new getImageUrlsFromGame()));
