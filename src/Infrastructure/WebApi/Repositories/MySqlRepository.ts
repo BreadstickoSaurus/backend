@@ -1,6 +1,5 @@
 import type { GameFull } from '../db/models/GameFullModel.ts';
-import { Database, User, Game, ForeignKeyError, type Platform, type Publisher, type Developer, type Genre, type State, type Country } from "../mod.ts";
-import { AuthenticationError, ValidationError } from "../mod.ts";
+import { AuthenticationError, Database, ForeignKeyError, Game, User, ValidationError, type Country, type Developer, type Genre, type Platform, type Publisher, type State } from "../mod.ts";
 
 export class MySqlRepository {
     private db: Database;
@@ -330,12 +329,12 @@ export class MySqlRepository {
                     release_country_code = ?, 
                     publisher_id = ?, 
                     developer_id = ?, 
-                    genre_id = ?, 
-                    collection_id = ?, 
-                    wishlisted = ?
+                    genre_id = ?
                 WHERE 
-                    game_id = ?
+                    game_id = ?;
                 `,
+                // collection_id = ?, 
+                // wishlisted = ?
                 [
                     data.title, 
                     data.description, 
@@ -346,8 +345,8 @@ export class MySqlRepository {
                     data.publisherID, 
                     data.developerID, 
                     data.genreId, 
-                    data.collectionId, 
-                    data.wishlisted,
+                    // data.collectionId, 
+                    // data.wishlisted,
                     gameId 
                 ]
             );
