@@ -16,12 +16,12 @@ export class SemanticSearchService {
         scoredGames.sort((a, b) => b.titleSimilarityScore - a.titleSimilarityScore);
 
         // Step 3: Get the genre of the top match and compute its embedding
-        const topGenre = scoredGames[0].genre; // Assuming genre is a field on Game
+        const topGenre = scoredGames[0].genre.toString(); // Assuming genre is a field on Game
         const genreEmbedding = await getEmbedding(topGenre);
 
         // Step 4: Calculate genre similarity for each game and combine with title similarity
         const finalScoredGames = await Promise.all(scoredGames.map(async (game) => {
-            const gameGenreEmbedding = await getEmbedding(game.genre); // Embedding for each game's genre
+            const gameGenreEmbedding = await getEmbedding(game.genre.toString()); // Embedding for each game's genre
             const genreSimilarityScore = calculateCosineSimilarity(genreEmbedding, gameGenreEmbedding);
 
             // Combine title and genre similarity scores, e.g., with a 50-50 weighting
