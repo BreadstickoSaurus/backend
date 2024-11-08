@@ -12,8 +12,13 @@ export class GetGameDetailsEndpoint implements Endpoint {
             const controller = new GameController();
             const game = await controller.getGameDetails(parseInt(gameId));
 
+            const gameOutput = {
+                ...game,
+                releaseDate: game.releaseDate.toISOString().split('T')[0] // Only date part for JSON output
+            };
+
             context.response.status = 200;
-            context.response.body = game;
+            context.response.body = gameOutput;
 
 
         }catch(error){
