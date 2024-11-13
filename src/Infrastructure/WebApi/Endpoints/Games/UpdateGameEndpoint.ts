@@ -41,6 +41,8 @@ export class UpdateGameEndpoint implements Endpoint {
                 return;
             }   
 
+            console.log(data);
+
             const controller = new GameController();
 
             const collectionId = await controller.getCollectionId(parseInt(gameId));
@@ -72,7 +74,7 @@ export class UpdateGameEndpoint implements Endpoint {
         return {
             game_title: data.title,
             game_description: data.description,
-            releaseDate: data.releaseDate,
+            release_date: data.releaseDate,
             collectionId: colId,
             wishlisted: wishl,
             stateId: data.stateId,

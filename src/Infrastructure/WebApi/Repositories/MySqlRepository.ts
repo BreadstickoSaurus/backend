@@ -351,9 +351,9 @@ export class MySqlRepository {
                 ]
             );
     
-            if(result.affectedRows === 0){
-                throw new ValidationError("Game not updated");
-            }
+            // if(result.affectedRows === 0){
+            //     throw new ValidationError("Game not updated");
+            // }
     
             return gameId;
         }catch(error){
