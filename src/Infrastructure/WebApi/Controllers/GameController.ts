@@ -93,19 +93,55 @@ export class GameController {
         data.collectionId = await this.repository.getCollectionId(userId);
         try{
             const gameId = await this.repository.addGameToCol(data);
+            const fullgame = await this.repository.getGameDetails(gameId);
+            const embedding = await this.searchService.getGameEmbeddings(fullgame);
+            await this.repository.addGameEmbeddings(gameId, embedding);
             return gameId;
         } catch(error){
             throw error;
         }
     }
 
-    async getGamesUsingSemanticSearch(query: string): Promise<GameFull[]>{
-        try{
+    async getGamesUsingSemanticSearch(query: string): Promise<GameFull[]> {
+        try {
+            // Fetch all games
             const games = await this.repository.getAllWishlistGamesFull();
-            const result = this.searchService.findSimilarGames(query, games);
-            return result;
-        }catch(error){
+    
+            // If no query provided, return all games
+            if (!query) {
+                return games;
+            }
+        
+            // Step 2: Compute scores for each game
+            const combinedScore: { game: GameFull; score: number }[] = (await Promise.all(
+                games.map(async (game) => {
+                    if (!game.game_id) {
+                        return null; // Skip games without a valid ID
+                    }
+
+                    const titleEmbedding = await this.repository.getTitleEmbedding(game.game_id);
+                    const genreEmbedding = await this.repository.getGenreEmbedding(game.game_id);
+    
+                    const score = await this.searchService.findSimilarGames(
+                        query,
+                        titleEmbedding,
+                        genreEmbedding
+                    );
+    
+                    return { game, score };
+                })
+            )).filter((entry): entry is { game: GameFull; score: number } => entry !== null);
+    
+            // Remove null entries and sort by score in descending order
+            const sortedGames = combinedScore
+                .sort((a, b) => b.score - a.score)
+                .map((entry) => entry.game);
+    
+            return sortedGames;
+        } catch (error) {
+            console.error("Error in getGamesUsingSemanticSearch:", error);
             throw error;
         }
     }
+    
 }

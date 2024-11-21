@@ -91,20 +91,21 @@ export function endpoints(): Router {
     //search purely on text
 
 
-    //ShareCollection? > aparte link /private/public
+    //ShareCollection? > /private/public
     //toggle to enable share collection(volg systeem)
     //subscribe to userId('s) to see there wishlist
     //(also for wishlists)
+
+    
+    //collection/subscribe/:userId(user's id and subscribe id)
+    //collection/subscribed
+    //collection/subscribed/:userId(subscribe id)
+    //collection/subscribed/:userId/:gameId
 
     //wishlist/subscribe/:userId(user's id and subscribe id)
     //wishlist/subscribed
     //wishlist/subscribed/:userId(subscribe id)
     //wishlist/subscribed/:userId/:gameId
-
-    //collection/subscribe/:userId(user's id and subscribe id)
-    //collection/subscribed
-    //collection/subscribed/:userId(subscribe id)
-    //collection/subscribed/:userId/:gameId
 
     //(offline)
     return router;

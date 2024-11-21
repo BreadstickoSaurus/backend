@@ -6,7 +6,7 @@ import { ErrorsBag, validateRequest } from '../../../Shared/mod.ts';
 export class SemanticSearchEndpoint implements Endpoint {
     private readonly _errorsBag = new ErrorsBag();
     private readonly searchSchema = z.object({
-        query: z.string().min(1, 'Search query cannot be empty')
+        query: z.string()
     });
 
     async handle(context: RouterContext<string>): Promise<void> {

@@ -852,4 +852,59 @@ export class MySqlRepository {
             throw new Error("Database error");
         }
     }
+
+    async addGameEmbeddings (gameId: number, embeddings: { titleEmbedding: number[], genreEmbedding: number[] }): Promise<void> {
+
+        const titleEmbeddingJson = JSON.stringify(embeddings.titleEmbedding);
+        const genreEmbeddingJson = JSON.stringify(embeddings.genreEmbedding);
+
+        try {
+            console.log(embeddings);
+            await this.db.getClient().execute(
+                'INSERT INTO games_embedding (game_id, embedding_value_title, embedding_value_genre) VALUES (?, ?, ?)',
+                [gameId, titleEmbeddingJson, genreEmbeddingJson]
+            );
+        } catch (error) {
+            console.error("Error in addGameEmbeddings:", error);
+            throw new Error("Database error");
+        }
+    }
+
+    async getTitleEmbedding(gameId: number): Promise<number[]> {
+        try {
+            const result = await this.db.getClient().execute(
+                'SELECT embedding_value_title FROM games_embedding WHERE game_id = ?',
+                [gameId]
+            );
+
+            if (!result.rows || result.rows.length === 0) {
+                throw new ValidationError('Title embedding not found');
+            }
+
+            return JSON.parse(result.rows[0].embedding_value_title);
+        } catch (error) {
+            console.error("Error in getTitleEmbedding:", error);
+            if(error instanceof ValidationError) throw error;
+            throw new Error("Database error");
+        }
+    }
+
+    async getGenreEmbedding(gameId: number): Promise<number[]> {
+        try {
+            const result = await this.db.getClient().execute(
+                'SELECT embedding_value_genre FROM games_embedding WHERE game_id = ?',
+                [gameId]
+            );
+
+            if (!result.rows || result.rows.length === 0) {
+                throw new ValidationError('Genre embedding not found');
+            }
+
+            return JSON.parse(result.rows[0].embedding_value_genre);
+        } catch (error) {
+            console.error("Error in getGenreEmbedding:", error);
+            if(error instanceof ValidationError) throw error;
+            throw new Error("Database error");
+        }
+    }
 }
