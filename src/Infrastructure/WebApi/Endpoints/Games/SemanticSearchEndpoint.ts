@@ -1,7 +1,7 @@
 import { RouterContext } from '@oak/oak';
-import { GameController, ValidationError, type Endpoint } from '../../mod.ts';
 import { z } from '@zod';
 import { ErrorsBag, validateRequest } from '../../../Shared/mod.ts';
+import { GameController, ValidationError, type Endpoint } from '../../mod.ts';
 
 export class SemanticSearchEndpoint implements Endpoint {
     private readonly _errorsBag = new ErrorsBag();
@@ -27,11 +27,11 @@ export class SemanticSearchEndpoint implements Endpoint {
             const result = await controller.getGamesUsingSemanticSearch(query.toString());
 
             context.response.status = 200;
-            context.response.body = { results: result };
+            context.response.body = result;
         } catch (error) {
             if(error instanceof ValidationError){
                 context.response.status = 400;
-                context.response.body = { errors: error.message };
+                context.response.body = { error: error.message };
             }else{
                 console.error("Error in search endpoint:", error);
                 context.response.status = 500;
