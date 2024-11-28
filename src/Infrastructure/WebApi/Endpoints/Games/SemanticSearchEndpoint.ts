@@ -5,23 +5,21 @@ import { ErrorsBag, validateRequest } from '../../../Shared/mod.ts';
 
 export class SemanticSearchEndpoint implements Endpoint {
     private readonly _errorsBag = new ErrorsBag();
-    private readonly searchSchema = z.object({
-        query: z.string()
-    });
 
     async handle(context: RouterContext<string>): Promise<void> {
         try {
-            // Extract search query from the request body
-            const data = await context.request.body.json();
+            // // Extract search query from the request body
+            // const data = await context.request.body.json();
             
-            validateRequest(data, this.searchSchema, this._errorsBag);
+            // validateRequest(data, this.searchSchema, this._errorsBag);
 
-            if(this._errorsBag.hasErrors()){
-                context.response.status = 400;
-                context.response.body = { errors: this._errorsBag.getErrors() };
-                return;
-            }   
-            const query:string = data.query;
+            // if(this._errorsBag.hasErrors()){
+            //     context.response.status = 400;
+            //     context.response.body = { errors: this._errorsBag.getErrors() };
+            //     return;
+            // }   
+            // const query:string = data.query;
+            const query = z.string().parse(context.params.query);
 
             const controller = new GameController();
             const result = await controller.getGamesUsingSemanticSearch(query.toString());
