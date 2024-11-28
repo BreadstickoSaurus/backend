@@ -87,7 +87,7 @@ export function endpoints(): Router {
     router.get('/states', use(new GetStatesEndpoint()));
     router.get('/countries', use(new GetCountriesEndpoint()));
 
-    router.get('/game/search/semantic/:query', use(new SemanticSearchEndpoint()));
+    router.get('/game/search/semantic', use(new SemanticSearchEndpoint()));
     //search purely on text
 
 

@@ -1,6 +1,5 @@
 import { RouterContext } from '@oak/oak';
-import { z } from '@zod';
-import { ErrorsBag, validateRequest } from '../../../Shared/mod.ts';
+import { ErrorsBag } from '../../../Shared/mod.ts';
 import { GameController, ValidationError, type Endpoint } from '../../mod.ts';
 
 export class SemanticSearchEndpoint implements Endpoint {
@@ -19,10 +18,10 @@ export class SemanticSearchEndpoint implements Endpoint {
             //     return;
             // }   
             // const query:string = data.query;
-            const query = z.string().parse(context.params.query);
+            const query = context.request.url.searchParams.get('q');
 
             const controller = new GameController();
-            const result = await controller.getGamesUsingSemanticSearch(query.toString());
+            const result = await controller.getGamesUsingSemanticSearch(query || "");
 
             context.response.status = 200;
             context.response.body = result;
