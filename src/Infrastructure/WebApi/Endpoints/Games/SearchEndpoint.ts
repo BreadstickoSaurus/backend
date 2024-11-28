@@ -8,10 +8,10 @@ export class SearchEndpoint implements Endpoint {
 
     async handle(context: RouterContext<string>): Promise<void> {
         try {
-            const query = z.string().parse(context.params.query);
+            const query = context.request.url.searchParams.get('q');
 
             const controller = new GameController();
-            const result = await controller.getGamesUsingSearch(query.toString());
+            const result = await controller.getGamesUsingSearch(query || "");
 
             context.response.status = 200;
             context.response.body = result;

@@ -89,10 +89,7 @@ export function endpoints(): Router {
     router.get('/countries', use(new GetCountriesEndpoint()));
 
     router.get('/game/search/semantic', use(new SemanticSearchEndpoint()));
-    //search purely on text
-
-    router.get('/game/search/semantic/:query', use(new SemanticSearchEndpoint()));
-    router.get('/game/search/:query', use(new SearchEndpoint()));
+    router.get('/game/search/basic', use(new SearchEndpoint()));
 
     //ShareCollection? > /private/public
     //toggle to enable share collection(volg systeem)

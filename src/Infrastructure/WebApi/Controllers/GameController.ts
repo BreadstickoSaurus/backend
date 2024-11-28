@@ -145,6 +145,7 @@ export class GameController {
     }
 
     async getGamesUsingSearch(query: string): Promise<GameFull[]> {
+        console.log("huh");
         try{
             const games = await this.repository.getAllWishlistGamesFull();
             if(query === ""){

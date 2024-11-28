@@ -7,17 +7,6 @@ export class SemanticSearchEndpoint implements Endpoint {
 
     async handle(context: RouterContext<string>): Promise<void> {
         try {
-            // // Extract search query from the request body
-            // const data = await context.request.body.json();
-            
-            // validateRequest(data, this.searchSchema, this._errorsBag);
-
-            // if(this._errorsBag.hasErrors()){
-            //     context.response.status = 400;
-            //     context.response.body = { errors: this._errorsBag.getErrors() };
-            //     return;
-            // }   
-            // const query:string = data.query;
             const query = context.request.url.searchParams.get('q');
 
             const controller = new GameController();
