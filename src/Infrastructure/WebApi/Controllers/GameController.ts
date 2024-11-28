@@ -143,5 +143,19 @@ export class GameController {
             throw error;
         }
     }
+
+    async getGamesUsingSearch(query: string): Promise<GameFull[]> {
+        try{
+            const games = await this.repository.getAllWishlistGamesFull();
+            if(query === ""){
+                return games;
+            }
+            const filteredGames = games.filter(game => game.game_title.toLowerCase().includes(query.toLowerCase()));
+            return filteredGames;
+        }catch(error){
+            console.error("Error in getGamesUsingSearch:", error);
+            throw error;
+        }
+    }
     
 }

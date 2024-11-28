@@ -34,7 +34,8 @@ import {
     GetCountriesEndpoint,
     SemanticSearchEndpoint,
     AddAltTitlesToGameEndpoint,
-    DeleteAltTitlesFromGameEndpoint
+    DeleteAltTitlesFromGameEndpoint,
+    SearchEndpoint
 } from './mod.ts';
 
 function use(endpoint: Endpoint) {
@@ -88,8 +89,7 @@ export function endpoints(): Router {
     router.get('/countries', use(new GetCountriesEndpoint()));
 
     router.get('/game/search/semantic/:query', use(new SemanticSearchEndpoint()));
-    //search purely on text
-
+    router.get('/game/search/:query', use(new SearchEndpoint()));
 
     //ShareCollection? > /private/public
     //toggle to enable share collection(volg systeem)

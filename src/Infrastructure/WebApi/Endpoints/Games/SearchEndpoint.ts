@@ -1,9 +1,9 @@
 import { RouterContext } from '@oak/oak';
 import { z } from '@zod';
-import { ErrorsBag, validateRequest } from '../../../Shared/mod.ts';
+import { ErrorsBag } from '../../../Shared/mod.ts';
 import { GameController, ValidationError, type Endpoint } from '../../mod.ts';
 
-export class SemanticSearchEndpoint implements Endpoint {
+export class SearchEndpoint implements Endpoint {
     private readonly _errorsBag = new ErrorsBag();
 
     async handle(context: RouterContext<string>): Promise<void> {
@@ -11,7 +11,7 @@ export class SemanticSearchEndpoint implements Endpoint {
             const query = z.string().parse(context.params.query);
 
             const controller = new GameController();
-            const result = await controller.getGamesUsingSemanticSearch(query.toString());
+            const result = await controller.getGamesUsingSearch(query.toString());
 
             context.response.status = 200;
             context.response.body = result;
