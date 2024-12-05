@@ -93,6 +93,9 @@ export class MySqlRepository {
                 [userId]
             );
 
+            if (!result.rows || result.rows.length === 0) {
+                throw new ValidationError("userId not found");
+            }
             return result.rows[0].collection_id;
         } catch (error) {
             console.error("Error in getCollectionId:", error);
