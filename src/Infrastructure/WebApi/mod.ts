@@ -46,7 +46,9 @@ export { GetCountriesEndpoint } from './Endpoints/Countries/GetCountriesEndpoint
 export { SemanticSearchEndpoint } from './Endpoints/Games/SemanticSearchEndpoint.ts';
 export { SearchEndpoint } from './Endpoints/Games/SearchEndpoint.ts';
 
-export { SetCollectionStateEndpoint } from './Endpoints/Games/SetCollectionStateEndpoint.ts';
+export { SetCollectionStateEndpoint } from './Endpoints/Sharing/SetCollectionStateEndpoint.ts';
+export { SubscribeToUserEndpoint } from './Endpoints/Sharing/SubscribeToUserEndpoint.ts';
+
 
 export { Database } from './db/Database.ts';
 export type { User } from './db/models/UserModel.ts';

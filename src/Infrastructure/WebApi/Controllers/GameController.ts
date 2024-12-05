@@ -166,5 +166,27 @@ export class GameController {
             throw error;
         }
     }
+
+    async getCollectionState(collectionId: number): Promise<boolean> {
+        try{
+            const isPublic = await this.repository.getCollectionState(collectionId);
+            return isPublic;
+        }catch(error){
+            throw error;
+        }
+    }
+
+    async subscribeToUser(userId: number){
+        try{
+            const collectionId = await this.repository.getCollectionId(userId);
+            const isPublic = await this.repository.getCollectionState(collectionId);
+            if(isPublic){
+                return userId;
+            }
+            return null
+        }catch(error){
+            throw error;
+        }
+    }
     
 }

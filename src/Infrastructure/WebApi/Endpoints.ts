@@ -36,7 +36,8 @@ import {
     AddAltTitlesToGameEndpoint,
     DeleteAltTitlesFromGameEndpoint,
     SearchEndpoint,
-    SetCollectionStateEndpoint
+    SetCollectionStateEndpoint,
+    SubscribeToUserEndpoint
 } from './mod.ts';
 
 function use(endpoint: Endpoint) {
@@ -97,6 +98,7 @@ export function endpoints(): Router {
     //subscribe to userId('s) to see there wishlist
     //(also for wishlists)
     router.put('/collection/share', use(new SetCollectionStateEndpoint()));
+    router.get('/subscribe/:userId', use(new SubscribeToUserEndpoint()));
 
     
     //collection/subscribe/:userId(user's id and subscribe id)

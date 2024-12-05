@@ -93,14 +93,10 @@ export class MySqlRepository {
                 [userId]
             );
 
-            if (!result.rows || result.rows.length === 0) {
-                throw new ValidationError("Collection not found");
-            }
-
             return result.rows[0].collection_id;
         } catch (error) {
             console.error("Error in getCollectionId:", error);
-            throw new Error("Database error");
+            throw new ValidationError("UserID not found");
         }
     }
 
@@ -934,6 +930,23 @@ export class MySqlRepository {
         }
     }
 
-    
+    async getCollectionState(collectionId: number): Promise<boolean>{
+        try{
+            const result = await this.db.getClient().execute(
+                'SELECT public FROM collectionState WHERE collection_id = ?',
+                [collectionId]
+            );
+
+            if (!result.rows || result.rows.length === 0) {
+                throw new ValidationError('Collection not found');
+            }
+
+            return result.rows[0].public;
+        }catch(error){
+            console.error('Error in getCollectionState:', error);
+            if(error instanceof ValidationError) throw error;
+            throw new Error('Database error');
+        }
+    }
 
 }
