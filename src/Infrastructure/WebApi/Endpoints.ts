@@ -35,7 +35,8 @@ import {
     SemanticSearchEndpoint,
     AddAltTitlesToGameEndpoint,
     DeleteAltTitlesFromGameEndpoint,
-    SearchEndpoint
+    SearchEndpoint,
+    SetCollectionStateEndpoint
 } from './mod.ts';
 
 function use(endpoint: Endpoint) {
@@ -95,6 +96,7 @@ export function endpoints(): Router {
     //toggle to enable share collection(volg systeem)
     //subscribe to userId('s) to see there wishlist
     //(also for wishlists)
+    router.put('/collection/share', use(new SetCollectionStateEndpoint()));
 
     
     //collection/subscribe/:userId(user's id and subscribe id)

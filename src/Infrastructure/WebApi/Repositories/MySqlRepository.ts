@@ -62,6 +62,15 @@ export class MySqlRepository {
                 'INSERT INTO collections (user_id) VALUES (?)',
                 [userId]
             );
+
+            const colId = result.lastInsertId;
+            if (colId === undefined) {
+                throw new Error('Failed to retrieve collection ID');
+            }
+            await this.db.getClient().execute(
+                'INSERT INTO collectionState (collection_id, public) VALUES (?, ?)',
+                [colId, true]
+            );
     
             if (result.affectedRows === 0) {
                 throw new ValidationError("Could not add collection");
@@ -907,4 +916,24 @@ export class MySqlRepository {
             throw new Error("Database error");
         }
     }
+
+    async setCollectionState(collectionId: number, isPublic: boolean){
+        try{
+            const result = await this.db.getClient().execute(
+                'UPDATE collectionState SET public = ? WHERE collection_id = ?',
+                [isPublic, collectionId]
+            );
+
+            if(result.affectedRows === 0){
+                throw new ValidationError("Collection not found");
+            }
+        }catch(error){
+            console.error('Error in setCollectionState:', error);
+            if(error instanceof ValidationError) throw error;
+            throw new Error('Database error');
+        }
+    }
+
+    
+
 }

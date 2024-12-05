@@ -158,5 +158,13 @@ export class GameController {
             throw error;
         }
     }
+
+    async setCollectionState(collectionId: number, isPublic: boolean): Promise<void> {
+        try{
+            await this.repository.setCollectionState(collectionId, isPublic);
+        }catch(error){
+            throw error;
+        }
+    }
     
 }
