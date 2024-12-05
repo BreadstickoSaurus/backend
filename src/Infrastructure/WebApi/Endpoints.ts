@@ -93,10 +93,6 @@ export function endpoints(): Router {
     router.get('/game/search/semantic', use(new SemanticSearchEndpoint()));
     router.get('/game/search/basic', use(new SearchEndpoint()));
 
-    //ShareCollection? > /private/public
-    //toggle to enable share collection(volg systeem)
-    //subscribe to userId('s) to see there wishlist
-    //(also for wishlists)
     router.put('/collection/share', use(new SetCollectionStateEndpoint()));
     router.get('/subscribe/:userId', use(new SubscribeToUserEndpoint()));
 
