@@ -1,0 +1,769 @@
+openapi: 3.0.0
+info:
+  title: Game Collection API
+  version: 1.0.0
+  description: API for managing game collections, wishlists, and related entities
+
+servers:
+  - url: http://localhost:8000
+
+paths:
+  /:
+    get:
+      summary: Root endpoint
+      responses:
+        '200':
+          description: Successful response
+
+  /register:
+    post:
+      summary: Register a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRegistration'
+      responses:
+        '201':
+          description: User registered successfully
+
+  /login:
+    post:
+      summary: User login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserLogin'
+      responses:
+        '200':
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  userId:
+                    type: integer
+
+  /game/collection/{userId}:
+    post:
+      summary: Add game to collection
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Game'
+      responses:
+        '201':
+          description: Game added to collection
+    get:
+      summary: Get games from collection
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: List of games in collection
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Game'
+
+  /game/wishlist/{userId}:
+    post:
+      summary: Add game to wishlist
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Game'
+      responses:
+        '201':
+          description: Game added to wishlist
+    get:
+      summary: Get games from wishlist
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: List of games in wishlist
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Game'
+
+  /game/{gameId}:
+    get:
+      summary: Get game details
+      parameters:
+        - name: gameId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Game details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GameFull'
+    put:
+      summary: Update game
+      parameters:
+        - name: gameId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Game'
+      responses:
+        '200':
+          description: Game updated successfully
+    delete:
+      summary: Delete game
+      parameters:
+        - name: gameId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Game deleted successfully
+
+  /game/{gameId}/images:
+    post:
+      summary: Add image to game
+      parameters:
+        - name: gameId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                image:
+                  type: string
+                  format: binary
+      responses:
+        '201':
+          description: Image added successfully
+    get:
+      summary: Get image URLs from game
+      parameters:
+        - name: gameId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: List of image URLs
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+    delete:
+      summary: Delete image from game
+      parameters:
+        - name: gameId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                imageUrl:
+                  type: string
+      responses:
+        '204':
+          description: Image deleted successfully
+
+  /game/{gameId}/altTitles:
+    post:
+      summary: Add alternative titles to game
+      parameters:
+        - name: gameId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: string
+      responses:
+        '201':
+          description: Alternative titles added successfully
+    delete:
+      summary: Delete alternative titles from game
+      parameters:
+        - name: gameId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: string
+      responses:
+        '204':
+          description: Alternative titles deleted successfully
+
+  /platforms:
+    get:
+      summary: Get all platforms
+      responses:
+        '200':
+          description: List of platforms
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Platform'
+    post:
+      summary: Add a new platform
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Platform'
+      responses:
+        '201':
+          description: Platform added successfully
+
+  /platforms/{platformId}:
+    get:
+      summary: Get platform details
+      parameters:
+        - name: platformId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Platform details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Platform'
+    delete:
+      summary: Delete platform
+      parameters:
+        - name: platformId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Platform deleted successfully
+
+  /publishers:
+    get:
+      summary: Get all publishers
+      responses:
+        '200':
+          description: List of publishers
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Publisher'
+    post:
+      summary: Add a new publisher
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Publisher'
+      responses:
+        '201':
+          description: Publisher added successfully
+
+  /publishers/{publisherId}:
+    get:
+      summary: Get publisher details
+      parameters:
+        - name: publisherId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Publisher details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Publisher'
+    delete:
+      summary: Delete publisher
+      parameters:
+        - name: publisherId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Publisher deleted successfully
+
+  /developers:
+    get:
+      summary: Get all developers
+      responses:
+        '200':
+          description: List of developers
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Developer'
+    post:
+      summary: Add a new developer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Developer'
+      responses:
+        '201':
+          description: Developer added successfully
+
+  /developers/{developerId}:
+    get:
+      summary: Get developer details
+      parameters:
+        - name: developerId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Developer details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Developer'
+    delete:
+      summary: Delete developer
+      parameters:
+        - name: developerId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Developer deleted successfully
+
+  /genres:
+    get:
+      summary: Get all genres
+      responses:
+        '200':
+          description: List of genres
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Genre'
+    post:
+      summary: Add a new genre
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Genre'
+      responses:
+        '201':
+          description: Genre added successfully
+
+  /genres/{genreId}:
+    get:
+      summary: Get genre details
+      parameters:
+        - name: genreId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Genre details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Genre'
+    delete:
+      summary: Delete genre
+      parameters:
+        - name: genreId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Genre deleted successfully
+
+  /states:
+    get:
+      summary: Get all states
+      responses:
+        '200':
+          description: List of states
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/State'
+
+  /countries:
+    get:
+      summary: Get all countries
+      responses:
+        '200':
+          description: List of countries
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Country'
+
+  /game/search/semantic:
+    get:
+      summary: Semantic search for games
+      parameters:
+        - name: query
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: List of games matching the search query
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/GameFull'
+
+  /game/search/basic:
+    get:
+      summary: Basic search for games
+      parameters:
+        - name: query
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: List of games matching the search query
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/GameFull'
+
+  /collection/share:
+    put:
+      summary: Set collection sharing state
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                collectionId:
+                  type: integer
+                isPublic:
+                  type: boolean
+      responses:
+        '200':
+          description: Collection sharing state updated successfully
+
+  /subscribe/{userId}:
+    get:
+      summary: Subscribe to user's collection
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Subscription successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  userId:
+                    type: integer
+
+components:
+  schemas:
+    UserRegistration:
+      type: object
+      properties:
+        name:
+          type: string
+        password:
+          type: string
+      required:
+        - name
+        - password
+
+    UserLogin:
+      type: object
+      properties:
+        name:
+          type: string
+        password:
+          type: string
+      required:
+        - name
+        - password
+
+    Game:
+      type: object
+      properties:
+        game_id:
+          type: integer
+        game_title:
+          type: string
+        game_description:
+          type: string
+        release_date:
+          type: string
+          format: date
+        collectionId:
+          type: integer
+        wishlisted:
+          type: integer
+        stateId:
+          type: integer
+        platformId:
+          type: integer
+        ReleaseCountryCode:
+          type: string
+        publisherID:
+          type: integer
+        developerID:
+          type: integer
+        genreId:
+          type: integer
+      required:
+        - game_title
+        - game_description
+        - release_date
+        - collectionId
+        - wishlisted
+        - stateId
+        - platformId
+        - ReleaseCountryCode
+        - publisherID
+        - developerID
+        - genreId
+
+    GameFull:
+      type: object
+      properties:
+        game_id:
+          type: integer
+        game_title:
+          type: string
+        game_description:
+          type: string
+        release_date:
+          type: string
+          format: date
+        collectionId:
+          type: integer
+        wishlisted:
+          type: boolean
+        state:
+          type: object
+        platform:
+          type: object
+        releaseCountry:
+          type: object
+        publisher:
+          type: object
+        developer:
+          type: object
+        genre:
+          type: object
+        images:
+          type: array
+          items:
+            type: string
+        altTitles:
+          type: array
+          items:
+            type: string
+      required:
+        - game_title
+        - game_description
+        - release_date
+        - collectionId
+        - wishlisted
+        - state
+        - platform
+        - releaseCountry
+        - publisher
+        - developer
+        - genre
+
+    Platform:
+      type: object
+      properties:
+        platform_id:
+          type: integer
+        platform_name:
+          type: string
+        platform_description:
+          type: string
+        release_date:
+          type: string
+          format: date
+      required:
+        - platform_name
+
+    Publisher:
+      type: object
+      properties:
+        publisher_id:
+          type: integer
+        publisher_name:
+          type: string
+        publisher_description:
+          type: string
+        country_code:
+          type: string
+      required:
+        - publisher_name
+        - country_code
+
+    Developer:
+      type: object
+      properties:
+        developer_id:
+          type: integer
+        developer_name:
+          type: string
+        developer_description:
+          type: string
+        country_code:
+          type: string
+      required:
+        - developer_name
+        - country_code
+
+    Genre:
+      type: object
+      properties:
+        genre_id:
+          type: integer
+        genre_name:
+          type: string
+      required:
+        - genre_name
+
+    State:
+      type: object
+      properties:
+        state_id:
+          type: integer
+        state_name:
+          type: string
+        state_description:
+          type: string
+      required:
+        - state_name
+        - state_description
+
+    Country:
+      type: object
+      properties:
+        country_code:
+          type: string
+        country_name:
+          type: string
+      required:
+        - country_code
+        - country_name
