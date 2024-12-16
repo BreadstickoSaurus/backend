@@ -24,8 +24,8 @@ export class ImageController {
     
             // Return the URL of the uploaded image
             // Assuming the base URL is known or can be constructed
-            const baseUrl = `http://localhost:8888/uploads`; // Change to the correct path
-            return `${baseUrl}/${newFileName}`; // Adjusted to return the correct URL
+            
+            return `${newFileName}`; // Adjusted to return the correct URL
         }catch(error){
             throw error
         }

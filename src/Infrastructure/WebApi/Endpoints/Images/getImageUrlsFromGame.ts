@@ -11,7 +11,13 @@ export class getImageUrlsFromGame implements Endpoint{
             const gameId = context.params.gameId;
             
             const controller = new ImageController();
-            const imageUrls = await controller.getImageUrls(parseInt(gameId));  
+            const imageUrls = await controller.getImageUrls(parseInt(gameId)); 
+            const baseUrl = `${context.request.url.protocol}//${context.request.url.host}`;
+            
+            imageUrls.forEach((imageUrl, index) => {
+                imageUrls[index] = `${baseUrl}/uploads/${imageUrl}`;
+            });
+            
 
             context.response.status = 200;
             context.response.body = { 
