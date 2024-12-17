@@ -11,6 +11,12 @@ export class GetGameDetailsEndpoint implements Endpoint {
 
             const controller = new GameController();
             const game = await controller.getGameDetails(parseInt(gameId));
+            const baseUrl = `${context.request.url.protocol}//${context.request.url.host}`;
+            
+
+            game.images.forEach((imageUrl, index) => {
+                game.images[index] = `${baseUrl}/uploads/${imageUrl}`;
+            });
 
             const gameOutput = {
                 ...game,
