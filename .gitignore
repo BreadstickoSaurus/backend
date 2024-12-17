@@ -6,3 +6,5 @@
 
 # Ignore stored images
 images/*
+.jpg
+.png
