@@ -1,5 +1,5 @@
 import { ServiceLocator } from '../../Shared/mod.ts';
-import type { MySqlRepository, GameFull, Game } from '../mod.ts';
+import { type MySqlRepository, type GameFull, type Game, LoginEndpoint } from '../mod.ts';
 import { SemanticSearchService } from '../../Shared/mod.ts';
 import { promise } from '@zod';
 
@@ -102,14 +102,15 @@ export class GameController {
         }
     }
 
-    async getGamesUsingSemanticSearch(query: string): Promise<GameFull[]> {
+    async getGamesUsingSemanticSearch(query: string): Promise<{game:GameFull,score:number}[]> {
         try {
             // Fetch all games
             const games = await this.repository.getAllWishlistGamesFull();
     
             // If no query provided, return all games
             if (!query) {
-                return games;
+                const tmp = games.map(game => ({ game, score: 0 }));
+                return tmp;
             }
         
             // Step 2: Compute scores for each game
@@ -134,8 +135,7 @@ export class GameController {
     
             // Remove null entries and sort by score in descending order
             const sortedGames = combinedScore
-                .sort((a, b) => b.score - a.score)
-                .map((entry) => entry.game);
+                .sort((a, b) => b.score - a.score);
     
             return sortedGames;
         } catch (error) {
